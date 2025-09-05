@@ -50,3 +50,12 @@ while opcion != 3:
         print("Saliendo del programa...")
     else:
         print("Opción no válida")
+
+#Posibles funciones a utilizar en este 40%
+#mostrar_menu(): Primera imagen en consola con opciones para el jugador
+#generar_adivinanza() : Selecciona aleatoriamente una adivinanza de la lista.
+#mostrar_adivinanza(adivinanza) : Muestra el enunciado de la adivinanza en consola.
+#recibir_respuesta() : Toma y valida la respuesta del jugador.
+#verificar_respuesta(respuesta, solucion) : Compara la respuesta del jugador con la solución correcta.
+#mostrar_resultado(es_correcta) : Informa si el jugador acertó o no.
+#main() : Controla el flujo general del juego (mostrar adivinanza, leer respuesta, verificar, mostrar resultado).
