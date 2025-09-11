@@ -9,20 +9,14 @@ def mostrar_menu():
     print("3. Salir")
 
 def mostrar_resultado(es_correcta):
-    """
-    Informa si el jugador acertó o no la pregunta.
- 
-    """
+    """ Informa si el jugador acertó o no la pregunta """
     if es_correcta:
         print("¡Respuesta correcta! Sumás 10 puntos.")
     else:
         print("Respuesta incorrecta. Perdés 5 puntos.")
 
 def mostrar_tablero():
-    """
-    Muestra el puntaje de cada jugador al finalizar una ronda
-    (sin ordenar los resultados).
-    """
+    """ Muestra el puntaje de cada jugador al finalizar una ronda """
     print("TABLERO DE PUNTOS")
     if len(ranking) == 0:
         print("Todavía no hay jugadores registrados.")
@@ -82,4 +76,5 @@ while opcion != 3:
 #verificar_respuesta(respuesta, solucion) : Compara la respuesta del jugador con la solución correcta.
 #mostrar_resultado(es_correcta) : Informa si el jugador acertó o no.
 #main() : Controla el flujo general del juego (mostrar adivinanza, leer respuesta, verificar, mostrar resultado).
+
 
