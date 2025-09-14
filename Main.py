@@ -11,7 +11,7 @@ def mostrar_menu():
 
 def cargar_adivinanzas(): 
     """
-    Devuelve una lista de tuplas con adivinanzas (pregunta, respuesta).
+    Devuelve una adivinanza elegida al azar en forma de tupla (pregunta, respuesta).
     Se usan tuplas porque cada adivinanza es inmutable.
     """
     adivinanzas = [
@@ -32,6 +32,15 @@ def cargar_adivinanzas():
         ("Me usás para cebar, soy de calabaza o de acero, y sin mí no hay ronda. ¿Qué soy?", "mate"),
     ]
     return random.choice(adivinanzas)
+
+def pedir_jugadores(): 
+    """
+    Pide los nombres de los dos jugadores.
+    Usa cadenas de texto y funciones de cadenas (strip, capitalize).
+    """
+    j1 = input("Nombre del Jugador 1: ").strip().capitalize() or "Jugador1"
+    j2 = input("Nombre del Jugador 2: ").strip().capitalize() or "Jugador2"
+    return j1, j2
 
 def mostrar_resultado(es_correcta):
     """ Informa si el jugador acertó o no la pregunta """
@@ -101,6 +110,7 @@ while opcion != 3:
 #verificar_respuesta(respuesta, solucion) : Compara la respuesta del jugador con la solución correcta.
 #mostrar_resultado(es_correcta) : Informa si el jugador acertó o no.
 #main() : Controla el flujo general del juego (mostrar adivinanza, leer respuesta, verificar, mostrar resultado).
+
 
 
 
