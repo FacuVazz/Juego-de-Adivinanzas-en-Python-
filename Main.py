@@ -1,5 +1,6 @@
-
+import random
 ranking = {}
+
 
 
 def mostrar_menu():
@@ -7,6 +8,30 @@ def mostrar_menu():
     print("1. Jugar")
     print("2. Ver ranking de puntos")
     print("3. Salir")
+
+def cargar_adivinanzas(): 
+    """
+    Devuelve una lista de tuplas con adivinanzas (pregunta, respuesta).
+    Se usan tuplas porque cada adivinanza es inmutable.
+    """
+    adivinanzas = [
+        ("Me como con cuchara, soy nacional y vengo con dulce de leche. ¿Qué soy?", "flan"),
+        ("Me prendés un domingo, me das carbón y chorizo, y hago felices a todos. ¿Qué soy?", "parrilla"),
+        ("Soy larga, marrón y amarga, pero sin mí no arrancás la mañana. ¿Qué soy?", "cafe"),
+        ("Parezco italiano pero soy argento: tengo jamón, queso y salsa. ¿Quién soy?", "fugazzeta"),
+        ("No soy Messi ni Maradona, pero si me pateás bien, entro en el arco. ¿Qué soy?", "penal"),
+        ("Soy redonda, salada y vengo en paquete. Me como en el bondi o mirando tele. ¿Qué soy?", "papas fritas"),
+        ("Si me tomás, te mareás. Si me invitás, soy amigo. ¿Qué soy?", "fernet"),
+        ("Cuando llueve en verano y hace calor, me decís…", "llovizna"),
+        ("Me gritás en la calle si soy barato y de oferta. ¿Qué soy?", "liquidacion"),
+        ("Tengo medialuna, cuernitos y azúcar arriba. ¿Qué soy?", "factura"),
+        ("En la cancha me insultan todos, pero sin mí no hay partido. ¿Quién soy?", "arbitro"),
+        ("Me decís cuando estoy muy caro: '¡está por las…!' ¿Por las qué?", "nubes"),
+        ("Si digo 'soy una remera de piqué con cuellito', ¿qué soy?", "chomba"),
+        ("Soy verde, me ponés en la pizza o en el mate. ¿Qué soy?", "menta"),
+        ("Me usás para cebar, soy de calabaza o de acero, y sin mí no hay ronda. ¿Qué soy?", "mate"),
+    ]
+    return random.choice(adivinanzas)
 
 def mostrar_resultado(es_correcta):
     """ Informa si el jugador acertó o no la pregunta """
@@ -76,5 +101,6 @@ while opcion != 3:
 #verificar_respuesta(respuesta, solucion) : Compara la respuesta del jugador con la solución correcta.
 #mostrar_resultado(es_correcta) : Informa si el jugador acertó o no.
 #main() : Controla el flujo general del juego (mostrar adivinanza, leer respuesta, verificar, mostrar resultado).
+
 
 
