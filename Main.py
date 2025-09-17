@@ -53,6 +53,32 @@ def mostrar_resultado(acerto):
         print("Respuesta incorrecta. Perdés 5 puntos.")
 
 
+def imprimir_tablero(vidas):
+    """
+    Muestra el tablero con jugadores, puntos y vidas.
+    """
+    matriz = [[n, ranking.get(n, 0), vidas[n]] for n in vidas]  
+    matriz.sort(key=lambda fila: fila[1], reverse=True)
+    for n, p, v in matriz:
+        print(f"{n}: {p} puntos - {v} vidas")
+ 
+ 
+def preguntar(nombre, vidas):
+    """Turno de un jugador: pregunta, valida y actualiza su estado."""
+    if vidas[nombre] <= 0:
+        return
+    pregunta, solucion = cargar_adivinanzas()
+    print(f"\nTurno de {nombre}")
+    print("Pregunta:", pregunta)
+    resp = normalizar(input("Tu respuesta: "))
+    acerto = (resp == normalizar(solucion))
+    if acerto:
+        ranking[nombre] = ranking.get(nombre, 0) + 10
+    else:
+        ranking[nombre] = ranking.get(nombre, 0) - 5
+        vidas[nombre] -= 1
+    mostrar_resultado(acerto)
+ 
 
 
 
