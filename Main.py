@@ -52,27 +52,8 @@ def mostrar_resultado(es_correcta):
     else:
         print("Respuesta incorrecta. Perdés 5 puntos.")
 
-def mostrar_tablero():
-    """ Muestra el puntaje de cada jugador al finalizar una ronda """
-    print("TABLERO DE PUNTOS")
-    if len(ranking) == 0:
-        print("Todavía no hay jugadores registrados.")
-    else:
-        for jugador, puntos in ranking.items():
-            print(jugador, "tiene", puntos, "puntos")
 
 
-
-def jugar():
-    nombre = input("Ingresa tu nombre: ")
-    print("Bienvenido,", nombre, "¡vamos a jugar!")
-
-   
-    puntos = 10
-
-    
-    ranking[nombre] = puntos
-    print("Juego terminado,", nombre, "obtuvo", puntos, "puntos.")
 
 
 
