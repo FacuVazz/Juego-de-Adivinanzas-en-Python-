@@ -45,12 +45,13 @@ def pedir_jugadores():
     j2 = input("Nombre del Jugador 2: ").strip().capitalize() or "Jugador2"
     return j1, j2
 
-def mostrar_resultado(es_correcta):
+def mostrar_resultado(acerto):
     """ Informa si el jugador acertó o no la pregunta """
-    if es_correcta:
+    if acerto:
         print("¡Respuesta correcta! Sumás 10 puntos.")
     else:
         print("Respuesta incorrecta. Perdés 5 puntos.")
+
 
 
 
