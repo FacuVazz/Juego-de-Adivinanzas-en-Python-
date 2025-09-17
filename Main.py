@@ -78,7 +78,21 @@ def preguntar(nombre, vidas):
         ranking[nombre] = ranking.get(nombre, 0) - 5
         vidas[nombre] -= 1
     mostrar_resultado(acerto)
+
+
+def ganador(j1, j2, vidas):
+    """Devuelve una tupla (nombre, puntos, vidas) con el ganador."""
+    v1, v2 = vidas[j1], vidas[j2]
+    p1, p2 = ranking.get(j1, 0), ranking.get(j2, 0)
+    if v1 > 0 and v2 <= 0:
+        return (j1, p1, v1)
+    if v2 > 0 and v1 <= 0:
+        return (j2, p2, v2)
+    if p1 >= p2:
+        return (j1, p1, v1)
+    return (j2, p2, v2)
  
+
 
 
 
