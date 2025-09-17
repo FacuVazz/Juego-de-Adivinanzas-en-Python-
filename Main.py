@@ -91,7 +91,34 @@ def ganador(j1, j2, vidas):
     if p1 >= p2:
         return (j1, p1, v1)
     return (j2, p2, v2)
- 
+
+
+def jugar_1v1():
+    """
+    Juego de dos jugadores:
+    - 3 vidas por jugador.
+    - Tablero al final de cada ronda y al final del juego.
+    """
+    j1, j2 = pedir_jugadores()
+    ranking[j1] = 0
+    ranking[j2] = 0
+    vidas = {j1: 3, j2: 3}
+
+    jugadores = [j1, j2]
+    while True:
+        for j in jugadores:
+            if not (vidas[j1] > 0 and vidas[j2] > 0):
+                break
+            preguntar(j, vidas)
+        imprimir_tablero(vidas)  
+
+        if not (vidas[j1] > 0 and vidas[j2] > 0):
+            g, p, v = ganador(j1, j2, vidas)
+            print("----------------------------")
+            print("|Juego Finalizado|")
+            print(f"El GANADOR es: {g} con {p} puntos (vidas {v}).")
+            imprimir_tablero(vidas)  
+            break
 
 
 
