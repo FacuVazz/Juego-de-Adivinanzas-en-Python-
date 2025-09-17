@@ -1,14 +1,17 @@
+#Juego de Adivinanzas - "Adivinando" - Grupo 8
 import random
 ranking = {}
 
-
+normalizar = lambda s: s.strip().lower()
 
 def mostrar_menu():
-    print("=== MENÚ PRINCIPAL ===")
-    print("1. Jugar")
-    print("2. Ver ranking de puntos")
-    print("3. Salir")
-
+    """Muestra menú principal."""
+    print("\n|MENÚ PRINCIPAL|")
+    print("1) Jugar")
+    print("2) Salir")
+    print()
+    print("(Proximamente juego de a mas jugadores)")
+    
 def cargar_adivinanzas(): 
     """
     Devuelve una adivinanza elegida al azar en forma de tupla (pregunta, respuesta).
@@ -16,19 +19,19 @@ def cargar_adivinanzas():
     """
     adivinanzas = [
         ("Me como con cuchara, soy nacional y vengo con dulce de leche. ¿Qué soy?", "flan"),
-        ("Me prendés un domingo, me das carbón y chorizo, y hago felices a todos. ¿Qué soy?", "parrilla"),
-        ("Soy larga, marrón y amarga, pero sin mí no arrancás la mañana. ¿Qué soy?", "cafe"),
-        ("Parezco italiano pero soy argento: tengo jamón, queso y salsa. ¿Quién soy?", "fugazzeta"),
-        ("No soy Messi ni Maradona, pero si me pateás bien, entro en el arco. ¿Qué soy?", "penal"),
+        ("Me prendés un domingo, me das carbón, carne y hago felices a todos. ¿Qué soy?", "parrilla"),
+        ("Soy oscuro y amargo, pero sin mí no arrancás la mañana. ¿Qué soy?", "cafe"),
+        ("Parezco italiano pero soy argentino: tengo cebolla y estoy rellena de queso. ¿Quién soy?", "fugazzeta"),
+        ("No soy Messi ni Maradona, pero si me pateás bien, entro en el arco. ¿Qué soy?", "pelota"),
         ("Soy redonda, salada y vengo en paquete. Me como en el bondi o mirando tele. ¿Qué soy?", "papas fritas"),
-        ("Si me tomás, te mareás. Si me invitás, soy amigo. ¿Qué soy?", "fernet"),
-        ("Cuando llueve en verano y hace calor, me decís…", "llovizna"),
-        ("Me gritás en la calle si soy barato y de oferta. ¿Qué soy?", "liquidacion"),
-        ("Tengo medialuna, cuernitos y azúcar arriba. ¿Qué soy?", "factura"),
+        ("Si me tomás, te mareás. Si me invitás, soy amigo. Soy dorada y testigo ¿Qué soy?", "cerveza"),
+        ("Cuando llueve en verano hay mucha...", "humedad"),
+        ("Caigo de un arbol, soy verde y bastante caro. ¿Qué soy?", "palta"),
+        ("Puedo ser una medialuna, un cañoncito o un vigilante. ¿Qué soy?", "factura"),
         ("En la cancha me insultan todos, pero sin mí no hay partido. ¿Quién soy?", "arbitro"),
         ("Me decís cuando estoy muy caro: '¡está por las…!' ¿Por las qué?", "nubes"),
         ("Si digo 'soy una remera de piqué con cuellito', ¿qué soy?", "chomba"),
-        ("Soy verde, me ponés en la pizza o en el mate. ¿Qué soy?", "menta"),
+        ("Soy verde, me ponés en la pizza. ¿Qué soy?", "aceituna"),
         ("Me usás para cebar, soy de calabaza o de acero, y sin mí no hay ronda. ¿Qué soy?", "mate"),
     ]
     return random.choice(adivinanzas)
@@ -72,44 +75,8 @@ def jugar():
     print("Juego terminado,", nombre, "obtuvo", puntos, "puntos.")
 
 
-def ver_ranking():
-    print("=== RANKING DE PUNTOS ===")
-    if len(ranking) == 0:
-        print("Todavía no hay jugadores registrados.")
-    else:
-        for jugador in ranking:
-            print(jugador, ":", ranking[jugador], "puntos")
 
 
-opcion = 0
-while opcion != 3:
-    mostrar_menu()
-    eleccion = input("Elige una opción: ")
-
-  
-    if len(eleccion) > 0 and all(c >= '0' and c <= '9' for c in eleccion):
-        opcion = int(eleccion)
-    else:
-        print("Entrada inválida")
-        continue
-
-    if opcion == 1:
-        jugar()
-    elif opcion == 2:
-        ver_ranking()
-    elif opcion == 3:
-        print("Saliendo del programa...")
-    else:
-        print("Opción no válida")
-
-#Posibles funciones a utilizar en este 40%
-#mostrar_menu(): Primera imagen en consola con opciones para el jugador
-#generar_adivinanza() : Selecciona aleatoriamente una adivinanza de la lista.
-#mostrar_adivinanza(adivinanza) : Muestra el enunciado de la adivinanza en consola.
-#recibir_respuesta() : Toma y valida la respuesta del jugador.
-#verificar_respuesta(respuesta, solucion) : Compara la respuesta del jugador con la solución correcta.
-#mostrar_resultado(es_correcta) : Informa si el jugador acertó o no.
-#main() : Controla el flujo general del juego (mostrar adivinanza, leer respuesta, verificar, mostrar resultado).
 
 
 
