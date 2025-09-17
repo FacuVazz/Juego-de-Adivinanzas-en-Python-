@@ -6,6 +6,8 @@ normalizar = lambda s: s.strip().lower()
 
 def mostrar_menu():
     """Muestra menú principal."""
+    print("Bienvenido a Adivinando!")
+    print()
     print("\n|MENÚ PRINCIPAL|")
     print("1) Jugar")
     print("2) Salir")
@@ -119,6 +121,7 @@ def jugar_1v1():
             print(f"El GANADOR es: {g} con {p} puntos (vidas {v}).")
             imprimir_tablero(vidas)  
             break
+
 
 
 
