@@ -15,7 +15,6 @@ def mostrar_menu():
 def cargar_adivinanzas(): 
     """
     Devuelve una adivinanza elegida al azar en forma de tupla (pregunta, respuesta).
-    Se usan tuplas porque cada adivinanza es inmutable.
     """
     adivinanzas = [
         ("Me como con cuchara, soy nacional y vengo con dulce de leche. ¿Qué soy?", "flan"),
@@ -39,7 +38,6 @@ def cargar_adivinanzas():
 def pedir_jugadores(): 
     """
     Pide los nombres de los dos jugadores.
-    Usa cadenas de texto y funciones de cadenas (strip, capitalize).
     """
     j1 = input("Nombre del Jugador 1: ").strip().capitalize() or "Jugador1"
     j2 = input("Nombre del Jugador 2: ").strip().capitalize() or "Jugador2"
@@ -129,6 +127,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
