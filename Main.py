@@ -120,7 +120,17 @@ def jugar_1v1():
             imprimir_tablero(vidas)  
             break
 
-
+menu = True
+while menu:
+    mostrar_menu()
+    opcion = input("Elegí opción: ").strip()
+    if opcion == "1":
+        jugar_1v1()
+    elif opcion == "2":
+        print("Gracias totales por jugar maquina!")
+        menu = False
+    else:
+        print("Opción inválida.")
 
 
 
