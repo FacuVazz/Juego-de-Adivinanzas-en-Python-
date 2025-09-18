@@ -100,8 +100,6 @@ def jugar_1v1():
     - Tablero al final de cada ronda y al final del juego.
     """
     j1, j2 = pedir_jugadores()
-    ranking[j1] = 0
-    ranking[j2] = 0
     vidas = {j1: 3, j2: 3}
 
     jugadores = [j1, j2]
@@ -131,6 +129,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
