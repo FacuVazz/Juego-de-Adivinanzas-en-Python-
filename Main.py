@@ -82,16 +82,16 @@ def preguntar(nombre, vidas):
 
 
 def ganador(j1, j2, vidas):
-    """Devuelve una tupla (nombre, puntos, vidas) con el ganador."""
+    """Devuelve un diccionario con el ganador, sus puntos y vidas."""
     v1, v2 = vidas[j1], vidas[j2]
     p1, p2 = ranking.get(j1, 0), ranking.get(j2, 0)
     if v1 > 0 and v2 <= 0:
-        return (j1, p1, v1)
+        return {"nombre": j1, "puntos": p1, "vidas": v1}
     if v2 > 0 and v1 <= 0:
-        return (j2, p2, v2)
+        return {"nombre": j2, "puntos": p2, "vidas": v2}
     if p1 >= p2:
-        return (j1, p1, v1)
-    return (j2, p2, v2)
+        return {"nombre": j1, "puntos": p1, "vidas": v1}
+    return {"nombre": j2, "puntos": p2, "vidas": v2}
 
 
 def jugar_1v1():
@@ -102,7 +102,6 @@ def jugar_1v1():
     """
     j1, j2 = pedir_jugadores()
     vidas = {j1: 3, j2: 3}
-
     jugadores = [j1, j2]
     while True:
         for j in jugadores:
@@ -112,10 +111,10 @@ def jugar_1v1():
         imprimir_tablero(vidas)  
 
         if not (vidas[j1] > 0 and vidas[j2] > 0):
-            g, p, v = ganador(j1, j2, vidas)
+            resultado = ganador(j1, j2, vidas)
             print("----------------------------")
             print("|Juego Finalizado|")
-            print(f"El GANADOR es: {g} con {p} puntos (vidas {v}).")
+            print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (vidas {resultado['vidas']}).")
             imprimir_tablero(vidas)  
             break
 
@@ -130,6 +129,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
