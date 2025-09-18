@@ -14,26 +14,28 @@ def mostrar_menu():
     
 def cargar_adivinanzas(): 
     """
-    Devuelve una adivinanza elegida al azar en forma de tupla (pregunta, respuesta).
+    Devuelve una adivinanza elegida al azar en forma de diccionario {pregunta: respuesta}.
     """
-    adivinanzas = [
-        ("Me como con cuchara, soy nacional y vengo con dulce de leche. ¿Qué soy?", "flan"),
-        ("Me prendés un domingo, me das carbón, carne y hago felices a todos. ¿Qué soy?", "parrilla"),
-        ("Soy oscuro y amargo, pero sin mí no arrancás la mañana. ¿Qué soy?", "cafe"),
-        ("Parezco italiano pero soy argentino: tengo cebolla y estoy rellena de queso. ¿Quién soy?", "fugazzeta"),
-        ("No soy Messi ni Maradona, pero si me pateás bien, entro en el arco. ¿Qué soy?", "pelota"),
-        ("Soy redonda, salada y vengo en paquete. Me como en el bondi o mirando tele. ¿Qué soy?", "papas fritas"),
-        ("Si me tomás, te mareás. Si me invitás, soy amigo. Soy dorada y testigo ¿Qué soy?", "cerveza"),
-        ("Cuando llueve en verano hay mucha...", "humedad"),
-        ("Caigo de un arbol, soy verde y bastante caro. ¿Qué soy?", "palta"),
-        ("Puedo ser una medialuna, un cañoncito o un vigilante. ¿Qué soy?", "factura"),
-        ("En la cancha me insultan todos, pero sin mí no hay partido. ¿Quién soy?", "arbitro"),
-        ("Me decís cuando estoy muy caro: '¡está por las…!' ¿Por las qué?", "nubes"),
-        ("Si digo 'soy una remera de piqué con cuellito', ¿qué soy?", "chomba"),
-        ("Soy verde, me ponés en la pizza. ¿Qué soy?", "aceituna"),
-        ("Me usás para cebar, soy de calabaza o de acero, y sin mí no hay ronda. ¿Qué soy?", "mate"),
-    ]
-    return random.choice(adivinanzas)
+    adivinanzas = {
+        "Me como con cuchara, soy nacional y vengo con dulce de leche. ¿Qué soy?": "flan",
+        "Me prendés un domingo, me das carbón, carne y hago felices a todos. ¿Qué soy?": "parrilla",
+        "Soy oscuro y amargo, pero sin mí no arrancás la mañana. ¿Qué soy?": "cafe",
+        "Parezco italiano pero soy argentino: tengo cebolla y estoy rellena de queso. ¿Quién soy?": "fugazzeta",
+        "No soy Messi ni Maradona, pero si me pateás bien, entro en el arco. ¿Qué soy?": "pelota",
+        "Soy redonda, salada y vengo en paquete. Me como en el bondi o mirando tele. ¿Qué soy?": "papas fritas",
+        "Si me tomás, te mareás. Si me invitás, soy amigo. Soy dorada y testigo ¿Qué soy?": "cerveza",
+        "Cuando llueve en verano hay mucha...": "humedad",
+        "Caigo de un arbol, soy verde y bastante caro. ¿Qué soy?": "palta",
+        "Puedo ser una medialuna, un cañoncito o un vigilante. ¿Qué soy?": "factura",
+        "En la cancha me insultan todos, pero sin mí no hay partido. ¿Quién soy?": "arbitro",
+        "Me decís cuando estoy muy caro: '¡está por las…!' ¿Por las qué?": "nubes",
+        "Si digo 'soy una remera de piqué con cuellito', ¿qué soy?": "chomba",
+        "Soy verde, me ponés en la pizza. ¿Qué soy?": "aceituna",
+        "Me usás para cebar, soy de calabaza o de acero, y sin mí no hay ronda. ¿Qué soy?": "mate",
+    }
+
+    pregunta = random.choice(list(adivinanzas.keys()))
+    return {pregunta: adivinanzas[pregunta]}
 
 def pedir_jugadores(): 
     """
@@ -65,7 +67,8 @@ def preguntar(nombre, vidas):
     """Turno de un jugador: pregunta, valida y actualiza su estado."""
     if vidas[nombre] <= 0:
         return
-    pregunta, solucion = cargar_adivinanzas()
+    adiv = cargar_adivinanzas()
+    pregunta, solucion = list(adiv.items())[0]
     print(f"\nTurno de {nombre}")
     print("Pregunta:", pregunta)
     resp = normalizar(input("Tu respuesta: "))
@@ -127,6 +130,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
