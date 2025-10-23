@@ -64,21 +64,27 @@ def imprimir_tablero(vidas):
  
  
 def preguntar(nombre, vidas):
-    """Turno de un jugador: pregunta, valida y actualiza su estado."""
+    """Turno de un jugador: pregunta y valida."""
     if vidas[nombre] <= 0:
         return
     adiv = cargar_adivinanzas()
     pregunta, solucion = list(adiv.items())[0]
     print(f"\nTurno de {nombre}")
     print("Pregunta:", pregunta)
-    resp = normalizar(input("Tu respuesta: "))
-    acerto = (resp == normalizar(solucion))
-    if acerto:
-        ranking[nombre] = ranking.get(nombre, 0) + 10
-    else:
-        ranking[nombre] = ranking.get(nombre, 0) - 5
+
+    try:
+        resp = normalizar(input("Tu respuesta: "))
+        acerto = (resp == normalizar(solucion))
+        if acerto:
+            ranking[nombre] = ranking.get(nombre, 0) + 10
+        else:
+            ranking[nombre] = ranking.get(nombre, 0) - 5
+            vidas[nombre] -= 1
+        mostrar_resultado(acerto)
+    except Exception as e:
+        print("Ocurrio un error al ingresar la respuesta:", e)
+        print("Perdes 1 vida por error de entrada")
         vidas[nombre] -= 1
-    mostrar_resultado(acerto)
 
 
 def ganador(j1, j2, vidas):
@@ -95,20 +101,27 @@ def ganador(j1, j2, vidas):
 
 
 def jugar_1v1():
-    """
-    Juego de dos jugadores:
-    - 3 vidas por jugador.
-    - Tablero al final de cada ronda y al final del juego.
-    """
-    j1, j2 = pedir_jugadores()
-    vidas = {j1: 3, j2: 3}
-    jugadores = [j1, j2]
-    while True:
-        for j in jugadores:
+    """Juego 1 vs 1 con manejo de errores."""
+    try:
+        j1, j2 = pedir_jugadores()
+        vidas = {j1: 3, j2: 3}
+        jugadores = [j1, j2]
+        while True:
+            for j in jugadores:
+                if not (vidas[j1] > 0 and vidas[j2] > 0):
+                    break
+                preguntar(j, vidas)
+            imprimir_tablero(vidas)  
             if not (vidas[j1] > 0 and vidas[j2] > 0):
+                resultado = ganador(j1, j2, vidas)
+                print("----------------------------")
+                print("|Juego Finalizado|")
+                print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (vidas {resultado['vidas']}).")
+                imprimir_tablero(vidas)  
                 break
-            preguntar(j, vidas)
-        imprimir_tablero(vidas)  
+    except Exception as e:
+        print("Error inesperado durante la partida:", e)
+        print("Se interrumpe la ronda, volve a intentar jugar.")
 
         if not (vidas[j1] > 0 and vidas[j2] > 0):
             resultado = ganador(j1, j2, vidas)
@@ -129,6 +142,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
