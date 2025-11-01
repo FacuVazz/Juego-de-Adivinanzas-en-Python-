@@ -37,13 +37,37 @@ def cargar_adivinanzas():
     pregunta = random.choice(list(adivinanzas.keys()))
     return {pregunta: adivinanzas[pregunta]}
 
-def pedir_jugadores(): 
+def pedir_jugadores():
     """
-    Pide los nombres de los dos jugadores.
+    Pide cantidad de jugadores (1 a 4) y nombres.
+    Si hay más de 2 jugadores, devuelve los dos primeros para mantener compatibilidad por ahora.
+    Los demás los guardo para expandir despues.
     """
-    j1 = input("Nombre del Jugador 1: ").strip().capitalize() or "Jugador1"
-    j2 = input("Nombre del Jugador 2: ").strip().capitalize() or "Jugador2"
-    return j1, j2
+    while True:
+        try:
+            cant = input("¿Cuántos jugadores van a jugar? (1-4): ").strip()
+            if not cant.isdigit():
+                raise ValueError("Debe ser un número.")
+            cant = int(cant)
+            if not (1 <= cant <= 4):
+                raise ValueError("Ingresá entre 1 y 4 jugadores.")
+            break
+        except Exception as e:
+            print("Entrada inválida:", e)
+
+    jugadores = []
+    for i in range(1, cant + 1):
+        nombre = input(f"Nombre del Jugador {i}: ").strip().capitalize() or f"Jugador{i}"
+        while nombre in jugadores:
+            nombre = input(f"'{nombre}' ya está usado, ingresá otro: ").strip().capitalize() or f"Jugador{i}"
+        jugadores.append(nombre)
+
+    if len(jugadores) > 2:
+        print(f"(Modo ampliado pronto disponible. Jugando con {jugadores[0]} y {jugadores[1]} por ahora.)")
+    return jugadores[0], jugadores[1]
+
+
+   
 
 def mostrar_resultado(acerto):
     """ Informa si el jugador acertó o no la pregunta """
@@ -142,6 +166,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
