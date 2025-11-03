@@ -157,11 +157,11 @@ def jugar_1v1():
                 preguntar(j, vidas)
             imprimir_tablero(vidas)  
             if not (vidas[j1] > 0 and vidas[j2] > 0):
-                resultado = ganador(j1, j2, vidas)
                 print("----------------------------")
                 print("|Juego Finalizado|")
-                print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (vidas {resultado['vidas']}).")
-                imprimir_tablero(vidas)  
+                imprimir_tablero_general(jugadores)  # FELI REVISAR: tablero general (sumatoria total) 
+                resultado = determinar_ganador_por_puntos(jugadores)  # FELI REVISAR: ganador por puntos 
+                print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
                 break
     except Exception as e:
         print("Error inesperado durante la partida:", e)
@@ -207,6 +207,7 @@ def determinar_ganador_por_puntos(jugadores):
     tabla = [(n, ranking.get(n, 0)) for n in jugadores]
     tabla.sort(key=lambda t: t[1], reverse=True)
     return {"nombre": tabla[0][0], "puntos": tabla[0][1]}
+
 
 
 
