@@ -162,13 +162,16 @@ def jugar_1v1():
                 if not (vidas[j1] > 0 and vidas[j2] > 0):
                     break
                 preguntar(j, vidas)
-            imprimir_tablero(vidas)  
+            
+            imprimir_ronda(vidas)  # FELI REVISAR: resumen de la ronda (puntos, vidas, eliminados)
+
             if not (vidas[j1] > 0 and vidas[j2] > 0):
                 print("----------------------------")
                 print("|Juego Finalizado|")
-                imprimir_tablero_general(jugadores)  # FELI REVISAR: tablero general (sumatoria total) 
-                resultado = determinar_ganador_por_puntos(jugadores)  # FELI REVISAR: ganador por puntos 
+                imprimir_tablero_general(jugadores)  # FELI REVISAR
+                resultado = determinar_ganador_por_puntos(jugadores)  # FELI REVISARs
                 print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
+                imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR: resumen desempeño (aciertos, fallos, vidas usadas)
                 break
     except Exception as e:
         print("Error inesperado durante la partida:", e)
@@ -179,7 +182,8 @@ def jugar_1v1():
             print("----------------------------")
             print("|Juego Finalizado|")
             print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (vidas {resultado['vidas']}).")
-            imprimir_tablero(vidas)  
+            imprimir_tablero(vidas)
+            imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR
             break
 
 menu = True
@@ -215,6 +219,21 @@ def determinar_ganador_por_puntos(jugadores):
     tabla.sort(key=lambda t: t[1], reverse=True)
     return {"nombre": tabla[0][0], "puntos": tabla[0][1]}
 
+
+# NUEVA FUNCION FELI
+def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
+    """
+    Muestra resumen de desempeño general:
+    Por jugador: aciertos, fallos y vidas utilizadas.
+    """
+    print("\n=== Resumen de desempeño general ===")
+    for nombre in jugadores:
+        a = aciertos.get(nombre, 0)
+        f = fallos.get(nombre, 0)
+        usadas = vidas_iniciales - vidas.get(nombre, 0)
+        if usadas < 0:
+            usadas = 0  # por seguridad, por si se modifica lógica de vidas
+        print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
 
 
 
