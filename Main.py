@@ -162,21 +162,23 @@ def jugar_1v1():
                 if not (vidas[j1] > 0 and vidas[j2] > 0):
                     break
                 preguntar(j, vidas)
-            
+
             imprimir_ronda(vidas)  # FELI REVISAR: resumen de la ronda (puntos, vidas, eliminados)
 
             if not (vidas[j1] > 0 and vidas[j2] > 0):
                 print("----------------------------")
                 print("|Juego Finalizado|")
                 imprimir_tablero_general(jugadores)  # FELI REVISAR
-                resultado = determinar_ganador_por_puntos(jugadores)  # FELI REVISARs
+                resultado = determinar_ganador_por_puntos(jugadores)  # FELI REVISAR
                 print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
-                imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR: resumen desempeño (aciertos, fallos, vidas usadas)
+                imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR
                 break
+
     except Exception as e:
         print("Error inesperado durante la partida:", e)
         print("Se interrumpe la ronda, volve a intentar jugar.")
 
+       
         if not (vidas[j1] > 0 and vidas[j2] > 0):
             resultado = ganador(j1, j2, vidas)
             print("----------------------------")
@@ -184,7 +186,7 @@ def jugar_1v1():
             print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (vidas {resultado['vidas']}).")
             imprimir_tablero(vidas)
             imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR
-            break
+
 
 menu = True
 while menu:
@@ -234,6 +236,7 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         if usadas < 0:
             usadas = 0  # por seguridad, por si se modifica lógica de vidas
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
+
 
 
 
