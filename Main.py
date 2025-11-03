@@ -1,6 +1,8 @@
 #Juego de Adivinanzas - "Adivinando" - Grupo 8
 import random
 ranking = {}
+aciertos = {}  
+fallos = {}    
 
 normalizar = lambda s: s.strip().lower()
 
@@ -103,7 +105,7 @@ def imprimir_ronda(vidas):   # FELI REVISAR
 
     for nombre in vidas:
         if vidas[nombre] <= 0:
-            print(f"⚠️ {nombre} fue eliminado de la partida (sin vidas).")
+            print(f" {nombre} fue eliminado de la partida (sin vidas).")
  
 def preguntar(nombre, vidas):
     """Turno de un jugador: pregunta y valida."""
@@ -119,18 +121,23 @@ def preguntar(nombre, vidas):
         acerto = (resp == normalizar(solucion))
         if acerto:
             ranking[nombre] = ranking.get(nombre, 0) + 10
+            aciertos[nombre] = aciertos.get(nombre, 0) + 1   #feli revisar
         else:
             ranking[nombre] = ranking.get(nombre, 0) - 5
             vidas[nombre] -= 1
-            if vidas[nombre] == 0:  # feli revisar
-                print(f"⚠️ {nombre} se quedó sin vidas.")  # feli revisar
+            fallos[nombre] = fallos.get(nombre, 0) + 1       # feli revisar
+            if vidas[nombre] == 0:  # ya lo tenías como nuevo
+                print(f" {nombre} se quedó sin vidas.")
         mostrar_resultado(acerto)
     except Exception as e:
         print("Ocurrio un error al ingresar la respuesta:", e)
         print("Perdes 1 vida por error de entrada")
         vidas[nombre] -= 1
-        if vidas[nombre] == 0:  # feli revisar
-            print(f"⚠️ {nombre} se quedó sin vidas.")  # feli revisar
+        fallos[nombre] = fallos.get(nombre, 0) + 1           # feli revisar
+        if vidas[nombre] == 0:
+            print(f" {nombre} se quedó sin vidas.")
+
+            
 def ganador(j1, j2, vidas):
     """Devuelve un diccionario con el ganador, sus puntos y vidas."""
     v1, v2 = vidas[j1], vidas[j2]
@@ -207,6 +214,7 @@ def determinar_ganador_por_puntos(jugadores):
     tabla = [(n, ranking.get(n, 0)) for n in jugadores]
     tabla.sort(key=lambda t: t[1], reverse=True)
     return {"nombre": tabla[0][0], "puntos": tabla[0][1]}
+
 
 
 
