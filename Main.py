@@ -187,7 +187,7 @@ while menu:
     else:
         print("Opción inválida.")
 
-# === NUEVO ===
+# NUEVA FUNCION FELI
 def imprimir_tablero_general(jugadores):
     """
     Muestra el tablero general de puntos (sumatoria total de todas las rondas).
@@ -207,6 +207,7 @@ def determinar_ganador_por_puntos(jugadores):
     tabla = [(n, ranking.get(n, 0)) for n in jugadores]
     tabla.sort(key=lambda t: t[1], reverse=True)
     return {"nombre": tabla[0][0], "puntos": tabla[0][1]}
+
 
 
 
