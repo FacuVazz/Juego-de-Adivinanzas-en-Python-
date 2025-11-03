@@ -86,7 +86,7 @@ def imprimir_tablero(vidas):
     for n, p, v in matriz:
         print(f"{n}: {p} puntos - {v} vidas")
 
-def imprimir_ronda(vidas):
+def imprimir_ronda(vidas):   # FELI REVISAR
     """
     Muestra por ronda: puntos y vidas por usuario.
     Ademas, notifica si algún jugador fue eliminado.
@@ -106,28 +106,22 @@ def imprimir_ronda(vidas):
             print(f"⚠️ {nombre} fue eliminado de la partida (sin vidas).")
  
 def preguntar(nombre, vidas):
-    """Turno de un jugador: pregunta y valida."""
-    if vidas[nombre] <= 0:
-        return
-    adiv = cargar_adivinanzas()
-    pregunta, solucion = list(adiv.items())[0]
-    print(f"\nTurno de {nombre}")
-    print("Pregunta:", pregunta)
-
+    # ...
     try:
-        resp = normalizar(input("Tu respuesta: "))
-        acerto = (resp == normalizar(solucion))
+        # ...
         if acerto:
             ranking[nombre] = ranking.get(nombre, 0) + 10
         else:
             ranking[nombre] = ranking.get(nombre, 0) - 5
             vidas[nombre] -= 1
-        mostrar_resultado(acerto)
+            if vidas[nombre] == 0:                      # FELI REVISAR
+                print(f"⚠️ {nombre} se quedó sin vidas.")  # FELI REVISAR
+        # ...
     except Exception as e:
-        print("Ocurrio un error al ingresar la respuesta:", e)
-        print("Perdes 1 vida por error de entrada")
+        # ...
         vidas[nombre] -= 1
-
+        if vidas[nombre] == 0:                          # FELI REVISAR
+            print(f"⚠️ {nombre} se quedó sin vidas.")
 
 def ganador(j1, j2, vidas):
     """Devuelve un diccionario con el ganador, sus puntos y vidas."""
@@ -184,6 +178,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
