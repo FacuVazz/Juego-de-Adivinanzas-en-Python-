@@ -85,7 +85,25 @@ def imprimir_tablero(vidas):
     matriz.sort(key=lambda fila: fila[1], reverse=True)
     for n, p, v in matriz:
         print(f"{n}: {p} puntos - {v} vidas")
- 
+
+def imprimir_ronda(vidas):
+    """
+    Muestra por ronda: puntos y vidas por usuario.
+    Ademas, notifica si algún jugador fue eliminado.
+    """
+    print("Resumen de la ronda")
+    resumen = []
+    for nombre in vidas:
+        puntos = ranking.get(nombre, 0)
+        resumen.append((nombre, puntos, vidas[nombre]))
+    resumen.sort(key=lambda t: t[1], reverse=True)
+
+    for nombre, puntos, v in resumen:
+        print(f"{nombre} -> Puntos: {puntos} | Vidas: {v}")
+
+    for nombre in vidas:
+        if vidas[nombre] <= 0:
+            print(f"⚠️ {nombre} fue eliminado de la partida (sin vidas).")
  
 def preguntar(nombre, vidas):
     """Turno de un jugador: pregunta y valida."""
@@ -166,6 +184,7 @@ while menu:
         menu = False
     else:
         print("Opción inválida.")
+
 
 
 
