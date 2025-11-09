@@ -4,7 +4,6 @@ import random
 ranking = {}
 aciertos = {}  
 fallos = {}    
-
 normalizar = lambda s: s.strip().lower()
 
 def mostrar_menu():
@@ -15,7 +14,7 @@ def mostrar_menu():
     print("2) Salir")
     print("\n(Proximamente juego de a mas jugadores)")
     
-def elegir_adivinanza():
+def elegir_adivinanza(nivel):
     """Devuelve al azar una adivinanza con (pregunta,respuesta) del nivel indicado."""
     dificultades = {
         "facil" : facil,
@@ -25,6 +24,18 @@ def elegir_adivinanza():
     
     lista = dificultades[nivel]
     return random.choice(lista)
+
+def dificultad_por_ronda(rondas_completas):
+    if rondas_completas < 3:
+        return "facil"
+    if rondas_completas < 6:
+        return "media"
+    return "dificil"
+
+def cargar_adivinanzas(nivel):
+    pregunta, respuesta = elegir_adivinanza(nivel)
+    return {pregunta: respuesta}
+
 
 def pedir_jugadores():
     """
@@ -94,13 +105,13 @@ def imprimir_ronda(vidas):   # FELI REVISAR
         if vidas[nombre] <= 0:
             print(f" {nombre} fue eliminado de la partida (sin vidas).")
  
-def preguntar(nombre, vidas):
+def preguntar(nombre, vidas, nivel):
     """Turno de un jugador: pregunta y valida."""
     if vidas[nombre] <= 0:
         return
-    adiv = cargar_adivinanzas()
+    adiv = cargar_adivinanzas(nivel)
     pregunta, solucion = list(adiv.items())[0]
-    print(f"\nTurno de {nombre}")
+    print(f"\nTurno de {nombre} / Nivel: {nivel}")
     print("Pregunta:", pregunta)
 
     try:
@@ -138,17 +149,25 @@ def ganador(j1, j2, vidas):
     return {"nombre": j2, "puntos": p2, "vidas": v2}
 
 
-def jugar_1v1():
+def jugar_1v1(nivel_actual):
     """Juego 1 vs 1 con manejo de errores."""
+
     try:
         j1, j2 = pedir_jugadores()
         vidas = {j1: 3, j2: 3}
         jugadores = [j1, j2]
+        rondas_completas = 0
         while True:
             for j in jugadores:
                 if not (vidas[j1] > 0 and vidas[j2] > 0):
                     break
-                preguntar(j, vidas)
+
+                nivel_actual = dificultad_por_ronda(rondas_completas)
+
+                preguntar(j, vidas, nivel_actual)
+
+            if vidas[j1] > 0 and vidas[j2] > 0:
+                rondas_completas = rondas_completas + 1
 
             imprimir_ronda(vidas)  # FELI REVISAR: resumen de la ronda (puntos, vidas, eliminados)
 
@@ -165,6 +184,7 @@ def jugar_1v1():
         print("Error inesperado durante la partida:", e)
         print("Se interrumpe la ronda, volve a intentar jugar.")
 
+    
        
         if not (vidas[j1] > 0 and vidas[j2] > 0):
             resultado = ganador(j1, j2, vidas)
@@ -173,14 +193,15 @@ def jugar_1v1():
             print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (vidas {resultado['vidas']}).")
             imprimir_tablero(vidas)
             imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR
-
+    return nivel_actual
 
 menu = True
+nivel_actual = "facil"
 while menu:
     mostrar_menu()
     opcion = input("Elegí opción: ").strip()
     if opcion == "1":
-        jugar_1v1()
+        nivel_actual = jugar_1v1(nivel_actual)
     elif opcion == "2":
         print("Gracias totales por jugar maquina!")
         menu = False
@@ -223,6 +244,9 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         if usadas < 0:
             usadas = 0  # por seguridad, por si se modifica lógica de vidas
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
+
+
+
 
 
 
