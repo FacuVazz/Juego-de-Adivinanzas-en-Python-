@@ -14,16 +14,25 @@ def mostrar_menu():
     print("2) Salir")
     print("\n(Proximamente juego de a mas jugadores)")
     
-def elegir_adivinanza(nivel):
-    """Devuelve al azar una adivinanza con (pregunta,respuesta) del nivel indicado."""
+def elegir_adivinanza(nivel,usadas):
+    
     dificultades = {
         "facil" : facil,
         "media" : medio,
         "dificil" : dificil,
     }
-    
+
     lista = dificultades[nivel]
-    return random.choice(lista)
+
+    if len(usadas[nivel]) == len(lista):
+        usadas[nivel].clear()
+
+    restantes = [i for i in range(len(lista)) if i not in usadas[nivel]]
+
+    indice = random.choice(restantes)
+    usadas[nivel].add(indice)
+    return lista[indice]
+    
 
 def dificultad_por_ronda(rondas_completas):
     if rondas_completas < 3:
@@ -32,8 +41,8 @@ def dificultad_por_ronda(rondas_completas):
         return "media"
     return "dificil"
 
-def cargar_adivinanzas(nivel):
-    pregunta, respuesta = elegir_adivinanza(nivel)
+def cargar_adivinanzas(nivel, usadas):
+    pregunta, respuesta = elegir_adivinanza(nivel, usadas)
     return {pregunta: respuesta}
 
 
@@ -105,11 +114,11 @@ def imprimir_ronda(vidas):   # FELI REVISAR
         if vidas[nombre] <= 0:
             print(f" {nombre} fue eliminado de la partida (sin vidas).")
  
-def preguntar(nombre, vidas, nivel):
+def preguntar(nombre, vidas, nivel,usadas):
     """Turno de un jugador: pregunta y valida."""
     if vidas[nombre] <= 0:
         return
-    adiv = cargar_adivinanzas(nivel)
+    adiv = cargar_adivinanzas(nivel,usadas)
     pregunta, solucion = list(adiv.items())[0]
     print(f"\nTurno de {nombre} / Nivel: {nivel}")
     print("Pregunta:", pregunta)
@@ -157,6 +166,12 @@ def jugar_1v1(nivel_actual):
         vidas = {j1: 3, j2: 3}
         jugadores = [j1, j2]
         rondas_completas = 0
+
+        usadas = {
+            "facil": set(),
+            "media" : set(),
+            "dificil" : set()
+        }
         while True:
             for j in jugadores:
                 if not (vidas[j1] > 0 and vidas[j2] > 0):
@@ -164,7 +179,7 @@ def jugar_1v1(nivel_actual):
 
                 nivel_actual = dificultad_por_ronda(rondas_completas)
 
-                preguntar(j, vidas, nivel_actual)
+                preguntar(j, vidas, nivel_actual, usadas)
 
             if vidas[j1] > 0 and vidas[j2] > 0:
                 rondas_completas = rondas_completas + 1
@@ -244,8 +259,6 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         if usadas < 0:
             usadas = 0  # por seguridad, por si se modifica lógica de vidas
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
-
-
 
 
 
