@@ -1,4 +1,5 @@
 #Juego de Adivinanzas - "Adivinando" - Grupo 8
+from Adivinanzas import facil, medio, dificil
 import random
 ranking = {}
 aciertos = {}  
@@ -14,30 +15,16 @@ def mostrar_menu():
     print("2) Salir")
     print("\n(Proximamente juego de a mas jugadores)")
     
-def cargar_adivinanzas(): 
-    """
-    Devuelve una adivinanza elegida al azar en forma de diccionario {pregunta: respuesta}.
-    """
-    adivinanzas = {
-        "Me como con cuchara, soy nacional y vengo con dulce de leche. ¿Qué soy?": "flan",
-        "Me prendés un domingo, me das carbón, carne y hago felices a todos. ¿Qué soy?": "parrilla",
-        "Soy oscuro y amargo, pero sin mí no arrancás la mañana. ¿Qué soy?": "cafe",
-        "Parezco italiano pero soy argentino: tengo cebolla y estoy rellena de queso. ¿Quién soy?": "fugazzeta",
-        "No soy Messi ni Maradona, pero si me pateás bien, entro en el arco. ¿Qué soy?": "pelota",
-        "Soy redonda, salada y vengo en paquete. Me como en el bondi o mirando tele. ¿Qué soy?": "papas fritas",
-        "Si me tomás, te mareás. Si me invitás, soy amigo. Soy dorada y testigo ¿Qué soy?": "cerveza",
-        "Cuando llueve en verano hay mucha...": "humedad",
-        "Caigo de un arbol, soy verde y bastante caro. ¿Qué soy?": "palta",
-        "Puedo ser una medialuna, un cañoncito o un vigilante. ¿Qué soy?": "factura",
-        "En la cancha me insultan todos, pero sin mí no hay partido. ¿Quién soy?": "arbitro",
-        "Me decís cuando estoy muy caro: '¡está por las…!' ¿Por las qué?": "nubes",
-        "Si digo 'soy una remera de piqué con cuellito', ¿qué soy?": "chomba",
-        "Soy verde, me ponés en la pizza. ¿Qué soy?": "aceituna",
-        "Me usás para cebar, soy de calabaza o de acero, y sin mí no hay ronda. ¿Qué soy?": "mate",
+def elegir_adivinanza():
+    """Devuelve al azar una adivinanza con (pregunta,respuesta) del nivel indicado."""
+    dificultades = {
+        "facil" : facil,
+        "media" : medio,
+        "dificil" : dificil,
     }
-
-    pregunta = random.choice(list(adivinanzas.keys()))
-    return {pregunta: adivinanzas[pregunta]}
+    
+    lista = dificultades[nivel]
+    return random.choice(lista)
 
 def pedir_jugadores():
     """
@@ -236,6 +223,7 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         if usadas < 0:
             usadas = 0  # por seguridad, por si se modifica lógica de vidas
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
+
 
 
 
