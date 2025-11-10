@@ -3,7 +3,8 @@ from adivinanzas import facil, medio, dificil
 import random
 ranking = {}
 aciertos = {}  
-fallos = {}    
+fallos = {}
+rachas = {}
 normalizar = lambda s: s.strip().lower()
 
 def mostrar_menu():
@@ -40,6 +41,13 @@ def dificultad_por_ronda(rondas_completas):
     if rondas_completas < 6:
         return "media"
     return "dificil"
+    
+def siguiente_nivel(nivel):
+    if nivel == "facil":
+        return "media"
+    if nivel == "media":
+        return "dificil"
+    return "dificil"  
 
 def cargar_adivinanzas(nivel, usadas):
     pregunta, respuesta = elegir_adivinanza(nivel, usadas)
@@ -48,20 +56,19 @@ def cargar_adivinanzas(nivel, usadas):
 
 def pedir_jugadores():
     """
-    Pide cantidad de jugadores (1 a 4) y nombres.
-    Si hay más de 2 jugadores, devuelve los dos primeros para mantener compatibilidad por ahora.
-    Los demás los guardo para expandir despues.
+    Pide cantidad de jugadores (2 a 4) y nombres.
+    Devuelve la lista completa de jugadores en orden de turno.
     """
     while True:
         try:
-            cant = input("¿Cuántos jugadores van a jugar? (1-4): ").strip()
+            cant = input("¿Cuántos jugadores van a jugar? (2-4): ").strip()
             if not cant.isdigit():
                 raise ValueError("Debe ser un número.")
             cant = int(cant)
-            if not (1 <= cant <= 4):
-                raise ValueError("Ingresá entre 1 y 4 jugadores.")
+            if not (2 <= cant <= 4):
+                raise ValueError("Ingresá entre 2 y 4 jugadores.")
             break
-        except Exception as e:
+        except ValueError as e:
             print("Entrada inválida:", e)
 
     jugadores = []
@@ -71,12 +78,9 @@ def pedir_jugadores():
             nombre = input(f"'{nombre}' ya está usado, ingresá otro: ").strip().capitalize() or f"Jugador{i}"
         jugadores.append(nombre)
 
-    if len(jugadores) > 2:
-        print(f"(Modo ampliado pronto disponible. Jugando con {jugadores[0]} y {jugadores[1]} por ahora.)")
-    return jugadores[0], jugadores[1]
+    return jugadores
 
 
-   
 
 def mostrar_resultado(acerto):
     """ Informa si el jugador acertó o no la pregunta """
@@ -114,35 +118,52 @@ def imprimir_ronda(vidas):   # FELI REVISAR
         if vidas[nombre] <= 0:
             print(f" {nombre} fue eliminado de la partida (sin vidas).")
  
-def preguntar(nombre, vidas, nivel,usadas):
-    """Turno de un jugador: pregunta y valida."""
+def preguntar(nombre, vidas, nivel, usadas):
+    """
+    Turno de un jugador: pregunta y valida.
+    Devuelve (acerto: bool, eliminado_ahora: bool)
+    (Actualizacion de Facu)
+    """
     if vidas[nombre] <= 0:
-        return
-    adiv = cargar_adivinanzas(nivel,usadas)
+        return False, False
+    adiv = cargar_adivinanzas(nivel, usadas)
     pregunta, solucion = list(adiv.items())[0]
     print(f"\nTurno de {nombre} / Nivel: {nivel}")
     print("Pregunta:", pregunta)
-
+    
     try:
         resp = normalizar(input("Tu respuesta: "))
         acerto = (resp == normalizar(solucion))
+        if nombre not in rachas:
+            rachas[nombre] = 0
         if acerto:
-            ranking[nombre] = ranking.get(nombre, 0) + 10
-            aciertos[nombre] = aciertos.get(nombre, 0) + 1   #feli revisar
+            rachas[nombre] += 1
+            puntos = 10
+            if rachas[nombre] % 3 == 0:
+                puntos += 15
+                print("¡Estas en racha de 3! Bono de +15 puntos.")
+            ranking[nombre] = ranking.get(nombre, 0) + puntos
+            aciertos[nombre] = aciertos.get(nombre, 0) + 1
         else:
+            rachas[nombre] = 0
             ranking[nombre] = ranking.get(nombre, 0) - 5
             vidas[nombre] -= 1
-            fallos[nombre] = fallos.get(nombre, 0) + 1       # feli revisar
-            if vidas[nombre] == 0:  # ya lo tenías como nuevo
+            fallos[nombre] = fallos.get(nombre, 0) + 1
+            if vidas[nombre] == 0:
                 print(f" {nombre} se quedó sin vidas.")
+
         mostrar_resultado(acerto)
+        return acerto, (vidas[nombre] == 0)
+        
     except Exception as e:
-        print("Ocurrio un error al ingresar la respuesta:", e)
-        print("Perdes 1 vida por error de entrada")
+        print("Ocurrió un error al ingresar la respuesta:", e)
+        print("Perdés 1 vida por error de entrada")
+        rachas[nombre] = 0
         vidas[nombre] -= 1
-        fallos[nombre] = fallos.get(nombre, 0) + 1           # feli revisar
+        fallos[nombre] = fallos.get(nombre, 0) + 1
         if vidas[nombre] == 0:
             print(f" {nombre} se quedó sin vidas.")
+        return False, (vidas[nombre] == 0)
 
             
 def ganador(j1, j2, vidas):
@@ -249,6 +270,7 @@ if __name__ == "__main__":
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
