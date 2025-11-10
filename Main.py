@@ -236,18 +236,20 @@ def jugar_1v1(nivel_actual):
         print("Se interrumpe la ronda, volve a intentar jugar.")
         return nivel_actual
 
-menu = True
-nivel_actual = "facil"
-while menu:
-    mostrar_menu()
-    opcion = input("Elegí opción: ").strip()
-    if opcion == "1":
-        nivel_actual = jugar_1v1(nivel_actual)
-    elif opcion == "2":
-        print("Gracias totales por jugar maquina!")
-        menu = False
-    else:
-        print("Opción inválida.")
+if __name__ == "__main__":
+    menu = True
+    nivel_actual = "facil"
+    while menu:
+        mostrar_menu()
+        opcion = input("Elegí opción: ").strip()
+        if opcion == "1":
+            nivel_actual = jugar_1v1(nivel_actual)
+        elif opcion == "2":
+            print("Gracias totales por jugar maquina!")
+            menu = False
+        else:
+            print("Opción inválida.")
+
 
 
 
