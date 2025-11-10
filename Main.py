@@ -286,3 +286,4 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
 
 
 
+
