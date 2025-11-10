@@ -157,6 +157,42 @@ def ganador(j1, j2, vidas):
         return {"nombre": j1, "puntos": p1, "vidas": v1}
     return {"nombre": j2, "puntos": p2, "vidas": v2}
 
+def imprimir_tablero_general(jugadores):
+    """
+    Muestra el tablero general de puntos (sumatoria total de todas las rondas).
+    Ordenado de mayor a menor puntaje.
+    """
+    print("\n=== Tablero general de puntos ===")
+    tabla = [(n, ranking.get(n, 0)) for n in jugadores]
+    tabla.sort(key=lambda t: t[1], reverse=True)
+    for i, (n, p) in enumerate(tabla, start=1):
+        print(f"{i}. {n}: {p} puntos")
+
+# NUEVA FUNCION FELI
+def determinar_ganador_por_puntos(jugadores):
+    """
+    Determina el ganador exclusivamente por puntaje total acumulado.
+    """
+    tabla = [(n, ranking.get(n, 0)) for n in jugadores]
+    tabla.sort(key=lambda t: t[1], reverse=True)
+    return {"nombre": tabla[0][0], "puntos": tabla[0][1]}
+
+
+# NUEVA FUNCION FELI
+def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
+    """
+    Muestra resumen de desempeño general:
+    Por jugador: aciertos, fallos y vidas utilizadas.
+    """
+    print("\n=== Resumen de desempeño general ===")
+    for nombre in jugadores:
+        a = aciertos.get(nombre, 0)
+        f = fallos.get(nombre, 0)
+        usadas = vidas_iniciales - vidas.get(nombre, 0)
+        if usadas < 0:
+            usadas = 0  # por seguridad, por si se modifica lógica de vidas
+        print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
+
 
 def jugar_1v1(nivel_actual):
     """Juego 1 vs 1 con manejo de errores."""
@@ -198,17 +234,7 @@ def jugar_1v1(nivel_actual):
     except Exception as e:
         print("Error inesperado durante la partida:", e)
         print("Se interrumpe la ronda, volve a intentar jugar.")
-
-    
-       
-        if not (vidas[j1] > 0 and vidas[j2] > 0):
-            resultado = ganador(j1, j2, vidas)
-            print("----------------------------")
-            print("|Juego Finalizado|")
-            print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (vidas {resultado['vidas']}).")
-            imprimir_tablero(vidas)
-            imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR
-    return nivel_actual
+        return nivel_actual
 
 menu = True
 nivel_actual = "facil"
@@ -223,42 +249,6 @@ while menu:
     else:
         print("Opción inválida.")
 
-# NUEVA FUNCION FELI
-def imprimir_tablero_general(jugadores):
-    """
-    Muestra el tablero general de puntos (sumatoria total de todas las rondas).
-    Ordenado de mayor a menor puntaje.
-    """
-    print("\n=== Tablero general de puntos ===")
-    tabla = [(n, ranking.get(n, 0)) for n in jugadores]
-    tabla.sort(key=lambda t: t[1], reverse=True)
-    for i, (n, p) in enumerate(tabla, start=1):
-        print(f"{i}. {n}: {p} puntos")
-
-# NUEVA FUNCION FELI
-def determinar_ganador_por_puntos(jugadores):
-    """
-    Determina el ganador exclusivamente por puntaje total acumulado.
-    """
-    tabla = [(n, ranking.get(n, 0)) for n in jugadores]
-    tabla.sort(key=lambda t: t[1], reverse=True)
-    return {"nombre": tabla[0][0], "puntos": tabla[0][1]}
-
-
-# NUEVA FUNCION FELI
-def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
-    """
-    Muestra resumen de desempeño general:
-    Por jugador: aciertos, fallos y vidas utilizadas.
-    """
-    print("\n=== Resumen de desempeño general ===")
-    for nombre in jugadores:
-        a = aciertos.get(nombre, 0)
-        f = fallos.get(nombre, 0)
-        usadas = vidas_iniciales - vidas.get(nombre, 0)
-        if usadas < 0:
-            usadas = 0  # por seguridad, por si se modifica lógica de vidas
-        print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
 
 
 
