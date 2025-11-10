@@ -1,5 +1,5 @@
 #Juego de Adivinanzas - "Adivinando" - Grupo 8
-from Adivinanzas import facil, medio, dificil
+from adivinanzas import facil, medio, dificil
 import random
 ranking = {}
 aciertos = {}  
