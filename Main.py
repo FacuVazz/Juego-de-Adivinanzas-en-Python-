@@ -1,5 +1,5 @@
 #Juego de Adivinanzas - "Adivinando" - Grupo 8
-from Adivinanzas import facil, medio, dificil
+from adivinanzas import facil, medio, dificil
 import random
 ranking = {}
 aciertos = {}  
@@ -259,6 +259,7 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         if usadas < 0:
             usadas = 0  # por seguridad, por si se modifica lógica de vidas
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
+
 
 
 
