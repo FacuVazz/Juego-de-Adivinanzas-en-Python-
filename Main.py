@@ -168,17 +168,6 @@ def preguntar(nombre, vidas, nivel, usadas):
         return False, (vidas[nombre] == 0)
 
             
-def ganador(j1, j2, vidas):
-    """Devuelve un diccionario con el ganador, sus puntos y vidas."""
-    v1, v2 = vidas[j1], vidas[j2]
-    p1, p2 = ranking.get(j1, 0), ranking.get(j2, 0)
-    if v1 > 0 and v2 <= 0:
-        return {"nombre": j1, "puntos": p1, "vidas": v1}
-    if v2 > 0 and v1 <= 0:
-        return {"nombre": j2, "puntos": p2, "vidas": v2}
-    if p1 >= p2:
-        return {"nombre": j1, "puntos": p1, "vidas": v1}
-    return {"nombre": j2, "puntos": p2, "vidas": v2}
 
 def imprimir_tablero_general(jugadores):
     """
@@ -300,6 +289,7 @@ if __name__ == "__main__":
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
