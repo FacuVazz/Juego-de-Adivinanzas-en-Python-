@@ -9,11 +9,13 @@ normalizar = lambda s: s.strip().lower()
 
 def mostrar_menu():
     """Muestra menú principal."""
-    print("Bienvenido a Adivinando!")
+    print("🧩 Bienvenido a Adivinando! 🧩")
+    print("----------------------")
     print("\n|MENÚ PRINCIPAL|")
     print("1) Jugar")
     print("2) Salir")
-    print("\n(Proximamente juego de a mas jugadores)")
+    print("----------------------")
+    
     
 def elegir_adivinanza(nivel,usadas):
     
@@ -215,47 +217,75 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
 
 
-def jugar_1v1(nivel_actual):
-    """Juego 1 vs 1 con manejo de errores."""
-
+def jugar(nivel_actual):
+    """Disparador principal del juego (2 a 4 jugadores, racha y bump de dificultad)."""
     try:
-        j1, j2 = pedir_jugadores()
-        vidas = {j1: 3, j2: 3}
-        jugadores = [j1, j2]
+        jugadores = pedir_jugadores()
+        vidas = {n: 3 for n in jugadores}
+        for n in jugadores:
+            rachas[n] = 0
         rondas_completas = 0
 
         usadas = {
             "facil": set(),
-            "media" : set(),
-            "dificil" : set()
+            "media": set(),
+            "dificil": set()
         }
+
         while True:
-            for j in jugadores:
-                if not (vidas[j1] > 0 and vidas[j2] > 0):
-                    break
+            # jugadores activos al inicio de la ronda
+            activos = [n for n in jugadores if vidas[n] > 0]
 
-                nivel_actual = dificultad_por_ronda(rondas_completas)
-
-                preguntar(j, vidas, nivel_actual, usadas)
-
-            if vidas[j1] > 0 and vidas[j2] > 0:
-                rondas_completas = rondas_completas + 1
-
-            imprimir_ronda(vidas)  # FELI REVISAR: resumen de la ronda (puntos, vidas, eliminados)
-
-            if not (vidas[j1] > 0 and vidas[j2] > 0):
+            # fin si queda 1 o ninguno
+            if len(activos) <= 1:
                 print("----------------------------")
                 print("|Juego Finalizado|")
-                imprimir_tablero_general(jugadores)  # FELI REVISAR
-                resultado = determinar_ganador_por_puntos(jugadores)  # FELI REVISAR
-                print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
-                imprimir_resumen_general(jugadores, vidas)  # FELI REVISAR
+                imprimir_tablero_general(jugadores)
+                if len(activos) == 1:
+                    g = activos[0]
+                    print(f"El GANADOR es: {g} (último con vidas). Puntos: {ranking.get(g,0)}")
+                else:
+                    resultado = determinar_ganador_por_puntos(jugadores)
+                    print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
+                imprimir_resumen_general(jugadores, vidas)
                 break
+
+            # turnos de la ronda, en orden de 'activos'
+            for nombre in list(activos):
+                if vidas[nombre] <= 0:
+                    continue
+
+                # progresión por rondas (no bajar si ya subimos antes)
+                nivel_round = dificultad_por_ronda(rondas_completas)
+                orden = {"facil": 0, "media": 1, "dificil": 2}
+                if orden[nivel_round] > orden[nivel_actual]:
+                    nivel_actual = nivel_round
+
+                acerto, eliminado = preguntar(nombre, vidas, nivel_actual, usadas)
+
+                # bump inmediato de dificultad si alguien fue eliminado en este turno
+                if eliminado:
+                    previo = nivel_actual
+                    nivel_actual = siguiente_nivel(nivel_actual)
+                    if nivel_actual != previo:
+                        print(f"⬆️ Dificultad aumenta por eliminación: {previo} → {nivel_actual}")
+
+                # si tras este turno ya queda 1 o 0 vivos, cortamos para cerrar
+                if sum(1 for n in jugadores if vidas[n] > 0) <= 1:
+                    break
+
+            # si aún hay más de 1 con vida, cierra la ronda
+            if sum(1 for n in jugadores if vidas[n] > 0) > 1:
+                rondas_completas += 1
+                imprimir_ronda(vidas)
 
     except Exception as e:
         print("Error inesperado durante la partida:", e)
-        print("Se interrumpe la ronda, volve a intentar jugar.")
+        print("Se interrumpe la ronda, volvé a intentar jugar.")
         return nivel_actual
+
+    return nivel_actual
+
 
 if __name__ == "__main__":
     menu = True
@@ -264,12 +294,13 @@ if __name__ == "__main__":
         mostrar_menu()
         opcion = input("Elegí opción: ").strip()
         if opcion == "1":
-            nivel_actual = jugar_1v1(nivel_actual)
+            nivel_actual = jugar(nivel_actual)
         elif opcion == "2":
             print("Gracias totales por jugar maquina!")
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
