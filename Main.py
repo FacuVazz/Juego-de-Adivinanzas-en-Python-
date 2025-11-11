@@ -11,7 +11,7 @@ def mostrar_menu():
     """Muestra menú principal."""
     print("🧩 Bienvenido a Adivinando! 🧩")
     print("----------------------")
-    print("\n|MENÚ PRINCIPAL|")
+    print("|MENÚ PRINCIPAL|")
     print("1) Jugar")
     print("2) Salir")
     print("----------------------")
@@ -300,6 +300,7 @@ if __name__ == "__main__":
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
