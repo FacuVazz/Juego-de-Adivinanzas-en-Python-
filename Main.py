@@ -13,7 +13,8 @@ def mostrar_menu():
     print("----------------------")
     print("|MENÚ PRINCIPAL|")
     print("1) Jugar")
-    print("2) Salir")
+    print("2) Ranking Historico")
+    print("3) Salir")
     print("----------------------")
     
     
@@ -49,7 +50,34 @@ def siguiente_nivel(nivel):
         return "media"
     if nivel == "media":
         return "dificil"
-    return "dificil"  
+    return "dificil"
+
+def guardar_ranking_txt(jugadores, ranking_sesion):
+    """
+    Guarda los puntajes finales de la partida en un archivo ranking.txt
+    """
+    try:
+        with open("ranking.txt", "a", encoding="utf-8") as f:
+            f.write("\n--NUEVA PARTIDA--\n")
+            for nombre in jugadores:
+                puntos = ranking_sesion.get(nombre, 0)
+                f.write(f"{nombre}: {puntos} puntos\n")
+            f.write("======================\n")
+        print("\nRanking guardado en 'ranking.txt'")
+    except Exception as e:
+        print("Error al guardar el ranking:", e)
+
+
+def mostrar_ranking_guardado():
+    """Muestra el contenido del archivo ranking.txt, si existe."""
+    try:
+        with open("ranking.txt", "r", encoding="utf-8") as f:
+            print("\n--HISTORIAL DE PARTIDAS--")
+            print(f.read())
+            print("-----------------------------")
+    except FileNotFoundError:
+        print("Aún no hay partidas guardadas.")
+
 
 def cargar_adivinanzas(nivel, usadas):
     pregunta, respuesta = elegir_adivinanza(nivel, usadas)
@@ -148,7 +176,7 @@ def preguntar(nombre, vidas, nivel, usadas):
             aciertos[nombre] = aciertos.get(nombre, 0) + 1
         else:
             rachas[nombre] = 0
-            ranking[nombre] = ranking.get(nombre, 0) - 5
+            ranking[nombre] = max(0, ranking.get(nombre, 0) - 5)
             vidas[nombre] -= 1
             fallos[nombre] = fallos.get(nombre, 0) + 1
             if vidas[nombre] == 0:
@@ -222,10 +250,8 @@ def jugar(nivel_actual):
         }
 
         while True:
-            # jugadores activos al inicio de la ronda
             activos = [n for n in jugadores if vidas[n] > 0]
 
-            # fin si queda 1 o ninguno
             if len(activos) <= 1:
                 print("----------------------------")
                 print("|Juego Finalizado|")
@@ -237,33 +263,29 @@ def jugar(nivel_actual):
                     resultado = determinar_ganador_por_puntos(jugadores)
                     print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
                 imprimir_resumen_general(jugadores, vidas)
+                guardar_ranking_txt(jugadores, ranking)
                 break
 
-            # turnos de la ronda, en orden de 'activos'
             for nombre in list(activos):
                 if vidas[nombre] <= 0:
                     continue
 
-                # progresión por rondas (no bajar si ya subimos antes)
                 nivel_round = dificultad_por_ronda(rondas_completas)
                 orden = {"facil": 0, "media": 1, "dificil": 2}
                 if orden[nivel_round] > orden[nivel_actual]:
                     nivel_actual = nivel_round
 
                 acerto, eliminado = preguntar(nombre, vidas, nivel_actual, usadas)
-
-                # bump inmediato de dificultad si alguien fue eliminado en este turno
+               
                 if eliminado:
                     previo = nivel_actual
                     nivel_actual = siguiente_nivel(nivel_actual)
                     if nivel_actual != previo:
                         print(f"⬆️ Dificultad aumenta por eliminación: {previo} → {nivel_actual}")
 
-                # si tras este turno ya queda 1 o 0 vivos, cortamos para cerrar
                 if sum(1 for n in jugadores if vidas[n] > 0) <= 1:
                     break
 
-            # si aún hay más de 1 con vida, cierra la ronda
             if sum(1 for n in jugadores if vidas[n] > 0) > 1:
                 rondas_completas += 1
                 imprimir_ronda(vidas)
@@ -285,10 +307,13 @@ if __name__ == "__main__":
         if opcion == "1":
             nivel_actual = jugar(nivel_actual)
         elif opcion == "2":
+            mostrar_ranking_guardado()
+        elif opcion == "3":
             print("Gracias totales por jugar maquina!")
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
