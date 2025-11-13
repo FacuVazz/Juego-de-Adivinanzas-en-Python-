@@ -130,16 +130,7 @@ def mostrar_resultado(acerto):
         print("Respuesta incorrecta. Perdés 5 puntos.")
 
 
-def imprimir_tablero(vidas):
-    """
-    Muestra el tablero con jugadores, puntos y vidas.
-    """
-    matriz = [[n, ranking.get(n, 0), vidas[n]] for n in vidas]  
-    matriz.sort(key=lambda fila: fila[1], reverse=True)
-    for n, p, v in matriz:
-        print(f"{n}: {p} puntos - {v} vidas")
-
-def imprimir_ronda(vidas):   # FELI REVISAR
+def imprimir_ronda(vidas):  
     """
     Muestra por ronda: puntos y vidas por usuario.
     Ademas, notifica si algún jugador fue eliminado.
@@ -218,7 +209,7 @@ def imprimir_tablero_general(jugadores):
     for i, (n, p) in enumerate(tabla, start=1):
         print(f"{i}. {n}: {p} puntos")
 
-# NUEVA FUNCION FELI
+
 def determinar_ganador_por_puntos(jugadores):
     """
     Determina el ganador exclusivamente por puntaje total acumulado.
@@ -228,7 +219,6 @@ def determinar_ganador_por_puntos(jugadores):
     return {"nombre": tabla[0][0], "puntos": tabla[0][1]}
 
 
-# NUEVA FUNCION FELI
 def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
     """
     Muestra resumen de desempeño general:
@@ -240,7 +230,7 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         f = fallos.get(nombre, 0)
         usadas = vidas_iniciales - vidas.get(nombre, 0)
         if usadas < 0:
-            usadas = 0  # por seguridad, por si se modifica lógica de vidas
+            usadas = 0  
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
 
 
@@ -293,7 +283,7 @@ def jugar(nivel_actual):
                     previo = nivel_actual
                     nivel_actual = siguiente_nivel(nivel_actual)
                     if nivel_actual != previo:
-                        print(f"⬆️ Dificultad aumenta por eliminación: {previo} → {nivel_actual}")
+                        print(f"La Dificultad aumenta por cada eliminacion: {previo} → {nivel_actual}")
 
                 if sum(1 for n in jugadores if vidas[n] > 0) <= 1:
                     break
@@ -325,6 +315,7 @@ if __name__ == "__main__":
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
