@@ -52,6 +52,16 @@ def siguiente_nivel(nivel):
         return "dificil"
     return "dificil"
 
+
+def cuenta_regresiva(n):
+    """Cuenta regresiva para usar recursividad"""
+    if n == 0:
+        print("¡Comienza el juego!")
+    else:
+        print(n)
+        cuenta_regresiva(n - 1)
+
+
 def guardar_ranking_txt(jugadores, ranking_sesion):
     """
     Guarda los puntajes finales de la partida en un archivo ranking.txt
@@ -237,6 +247,8 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
 def jugar(nivel_actual):
     """Disparador principal del juego (2 a 4 jugadores, racha y bump de dificultad)."""
     try:
+        print("\nPreparando la partida...")
+        cuenta_regresiva(3)
         jugadores = pedir_jugadores()
         vidas = {n: 3 for n in jugadores}
         for n in jugadores:
@@ -313,6 +325,7 @@ if __name__ == "__main__":
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
