@@ -348,15 +348,24 @@ if __name__ == "__main__":
     while menu:
         mostrar_menu()
         opcion = input("Elegí opción: ").strip()
+        
         if opcion == "1":
             nivel_actual = jugar(nivel_actual)
+
         elif opcion == "2":
             mostrar_ranking_guardado()
+
         elif opcion == "3":
+            mostrar_instructivo()   # ← NUEVO
+
+        elif opcion == "4":
             print("Gracias totales por jugar maquina!")
             menu = False
+
         else:
             print("Opción inválida.")
+
+
 
 
 
