@@ -299,6 +299,47 @@ def jugar(nivel_actual):
 
     return nivel_actual
 
+def mostrar_instructivo():
+    print("\n📘 INSTRUCTIVO DEL JUEGO - ADIVINANDO 📘")
+    print("--------------------------------------------")
+
+    print("\n🎯 OBJETIVO")
+    print("Acertar la mayor cantidad posible de adivinanzas, sumar puntos y mantener tus vidas.")
+    print("El último jugador con vidas o el que más puntos acumule será el ganador.")
+
+    print("\n❤️ VIDAS")
+    print("• Cada jugador comienza con 3 vidas.")
+    print("• Cada respuesta incorrecta resta 1 vida.")
+    print("• Los errores de entrada (excepciones) también restan 1 vida.")
+    print("• Cuando un jugador llega a 0 vidas queda eliminado y no vuelve a jugar.")
+
+    print("\n🔥 DIFICULTAD")
+    print("El juego avanza en niveles según las rondas:")
+    print("• Fácil: rondas 1 a 3.")
+    print("• Media: rondas 4 a 6.")
+    print("• Difícil: ronda 7 en adelante.")
+    print("\nAdemás:")
+    print("• Si un jugador es eliminado, la dificultad sube automáticamente para todos.")
+    print("• Si ya están en Difícil, la dificultad no cambia.")
+    print("• Todos los jugadores responden preguntas del mismo nivel actual.")
+
+    print("\n🏆 SISTEMA DE PUNTOS")
+    print("• Respuesta correcta: +10 puntos.")
+    print("• Respuesta incorrecta: -5 puntos.")
+    print("• Error de entrada: perdés 1 vida, sin pérdida de puntos.")
+
+    print("\n💥 BONIFICACIÓN POR RACHA")
+    print("• Cada 3 respuestas correctas consecutivas, sumás +15 puntos extra.")
+    print("  (es decir, ese turno sumás 25 puntos en total).")
+
+    print("\n📊 AL FINAL DEL JUEGO SE MUESTRA:")
+    print("• El ganador.")
+    print("• El ranking general de puntajes.")
+    print("• Aciertos, fallos y vidas utilizadas por cada jugador.")
+
+    print("--------------------------------------------\n")
+
+
 
 if __name__ == "__main__":
     menu = True
@@ -315,6 +356,7 @@ if __name__ == "__main__":
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
