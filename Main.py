@@ -7,15 +7,7 @@ fallos = {}
 rachas = {}
 normalizar = lambda s: s.strip().lower()
 
-def mostrar_menu():
-    """Muestra menú principal."""
-    print("🧩 Bienvenido a Adivinando! 🧩")
-    print("----------------------")
-    print("|MENÚ PRINCIPAL|")
-    print("1) Jugar")
-    print("2) Ranking Historico")
-    print("3) Salir")
-    print("----------------------")
+
     
     
 def elegir_adivinanza(nivel,usadas):
@@ -356,6 +348,7 @@ if __name__ == "__main__":
             menu = False
         else:
             print("Opción inválida.")
+
 
 
 
