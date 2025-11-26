@@ -1,6 +1,7 @@
 #Juego de Adivinanzas - "Adivinando" - Grupo 8
 from adivinanzas import facil, medio, dificil
 import random
+import time
 ranking = {}
 aciertos = {}  
 fallos = {}
@@ -60,6 +61,7 @@ def cuenta_regresiva(n):
         print("¡Comienza el juego!")
     else:
         print(n)
+        time.sleep(1)
         cuenta_regresiva(n - 1)
 
 
@@ -364,6 +366,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
