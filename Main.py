@@ -382,20 +382,25 @@ if __name__ == "__main__":
         opcion = input("Elegí opción: ").strip()
         
         if opcion == "1":
-            nivel_actual = jugar(nivel_actual)
+            nivel_actual = jugar(nivel_actual, None)
 
         elif opcion == "2":
-            mostrar_ranking_guardado()
+            categoria = pedir_categorias()
+            nivel_actual = jugar(nivel_actual, categoria)
 
         elif opcion == "3":
-            mostrar_instructivo()   # ← NUEVO
+            mostrar_ranking_guardado()
 
         elif opcion == "4":
+            mostrar_instructivo()
+
+        elif opcion == "5":
             print("Gracias totales por jugar maquina!")
             menu = False
 
         else:
             print("Opción inválida.")
+
 
 
 
