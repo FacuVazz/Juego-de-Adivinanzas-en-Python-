@@ -1,5 +1,5 @@
 #Juego de Adivinanzas - "Adivinando" - Grupo 8
-from adivinanzas import facil, medio, dificil
+from adivinanzas import facil, medio, dificil, categorias_disponibles
 import random
 import time
 ranking = {}
@@ -12,11 +12,13 @@ def mostrar_menu():
     print("🧩 Bienvenido a Adivinando! 🧩")
     print("----------------------")
     print("|MENÚ PRINCIPAL|")
-    print("1) Jugar")
-    print("2) Ranking Histórico")
-    print("3) Instructivo del juego")  
-    print("4) Salir")
+    print("1) Jugar (todas las categorías)")
+    print("2) Jugar eligiendo categorías")
+    print("3) Ranking Histórico")
+    print("4) Instructivo del juego")
+    print("5) Salir")
     print("----------------------")
+
 
 def pedir_categorias():
     print("Elegi categoria de adivinanzas:")
@@ -35,10 +37,9 @@ def pedir_categorias():
         except ValueError:
             print("Entrada inválida. Ingresá solo números.")
 
-
     
     
-def elegir_adivinanza(nivel,usadas):
+def elegir_adivinanza(nivel,usadas, categoria):
     
     dificultades = {
         "facil" : facil,
@@ -48,14 +49,24 @@ def elegir_adivinanza(nivel,usadas):
 
     lista = dificultades[nivel]
 
-    if len(usadas[nivel]) == len(lista):
-        usadas[nivel].clear()
+    if categoria is None: 
+        if len(usadas[nivel]) == len(lista):
+            usadas[nivel].clear()  
 
-    restantes = [i for i in range(len(lista)) if i not in usadas[nivel]]
+        restantes = [i for i in range(len(lista)) if i not in usadas[nivel]]
+    else: 
+
+        restantes = [i for i in range(len(lista)) if i not in usadas[nivel] and lista[i][2] == categoria]
+
+        if len(restantes) == 0:
+            usadas[nivel].clear()
+            restantes = [i for i in range(len(lista)) if lista[i][2] == categoria]
 
     indice = random.choice(restantes)
     usadas[nivel].add(indice)
-    return lista[indice]
+
+    pregunta,respuesta,categoria = lista[indice]
+    return pregunta, respuesta
     
 
 def dificultad_por_ronda(rondas_completas):
@@ -110,8 +121,8 @@ def mostrar_ranking_guardado():
         print("Aún no hay partidas guardadas.")
 
 
-def cargar_adivinanzas(nivel, usadas):
-    pregunta, respuesta = elegir_adivinanza(nivel, usadas)
+def cargar_adivinanzas(nivel, usadas, categoria):
+    pregunta, respuesta = elegir_adivinanza(nivel, usadas, categoria)
     return {pregunta: respuesta}
 
 
@@ -170,7 +181,7 @@ def imprimir_ronda(vidas):
         if vidas[nombre] <= 0:
             print(f" {nombre} fue eliminado de la partida (sin vidas).")
  
-def preguntar(nombre, vidas, nivel, usadas):
+def preguntar(nombre, vidas, nivel, usadas, categoria):
     """
     Turno de un jugador: pregunta y valida.
     Devuelve (acerto: bool, eliminado_ahora: bool)
@@ -178,7 +189,7 @@ def preguntar(nombre, vidas, nivel, usadas):
     """
     if vidas[nombre] <= 0:
         return False, False
-    adiv = cargar_adivinanzas(nivel, usadas)
+    adiv = cargar_adivinanzas(nivel, usadas, categoria)
     pregunta, solucion = list(adiv.items())[0]
     print(f"\nTurno de {nombre} / Nivel: {nivel}")
     print("Pregunta:", pregunta)
@@ -255,7 +266,7 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
 
 
-def jugar(nivel_actual):
+def jugar(nivel_actual, categoria):
     """Disparador principal del juego (2 a 4 jugadores, racha y bump de dificultad)."""
     try:
         print("\nPreparando la partida...")
@@ -298,7 +309,7 @@ def jugar(nivel_actual):
                 if orden[nivel_round] > orden[nivel_actual]:
                     nivel_actual = nivel_round
 
-                acerto, eliminado = preguntar(nombre, vidas, nivel_actual, usadas)
+                acerto, eliminado = preguntar(nombre, vidas, nivel_actual, usadas, categoria)
                
                 if eliminado:
                     previo = nivel_actual
@@ -319,6 +330,7 @@ def jugar(nivel_actual):
         return nivel_actual
 
     return nivel_actual
+
 
 def mostrar_instructivo():
     print("\n📘 INSTRUCTIVO DEL JUEGO - ADIVINANDO 📘")
@@ -384,6 +396,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
