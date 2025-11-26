@@ -19,15 +19,22 @@ def mostrar_menu():
     print("----------------------")
 
 def pedir_categorias():
-    print("Elegi categorias de adivinanzas:")
+    print("Elegi categoria de adivinanzas:")
     print("1) Cultura general / 2) logica / 3) argentina")
 
     while True: 
-        opcion = input("Ingrese el numero de la categoria: ")
-        if 1 <= num <= len(categorias_disponibles):
-            categoria = categorias_disponibles[num - 1]
-            print("Categoria elegida: ",categoria)
-            return categoria
+        try:
+            num = int(input("Ingrese el numero de la categoria: "))
+
+            if 1 <= num <= len(categorias_disponibles):
+                categoria = categorias_disponibles[num - 1]
+                print("Categoria elegida:", categoria)
+                return categoria
+            else:
+                print("Número fuera de rango. Probá de nuevo.")
+        except ValueError:
+            print("Entrada inválida. Ingresá solo números.")
+
 
     
     
@@ -377,6 +384,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
