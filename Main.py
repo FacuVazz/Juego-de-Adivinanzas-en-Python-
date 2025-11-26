@@ -18,6 +18,17 @@ def mostrar_menu():
     print("4) Salir")
     print("----------------------")
 
+def pedir_categorias():
+    print("Elegi categorias de adivinanzas:")
+    print("1) Cultura general / 2) logica / 3) argentina")
+
+    while True: 
+        opcion = input("Ingrese el numero de la categoria: ")
+        if 1 <= num <= len(categorias_disponibles):
+            categoria = categorias_disponibles[num - 1]
+            print("Categoria elegida: ",categoria)
+            return categoria
+
     
     
 def elegir_adivinanza(nivel,usadas):
@@ -366,6 +377,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
