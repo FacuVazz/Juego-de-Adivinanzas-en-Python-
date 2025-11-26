@@ -356,6 +356,16 @@ def mostrar_instructivo():
     print("• Si ya están en Difícil, la dificultad no cambia.")
     print("• Todos los jugadores responden preguntas del mismo nivel actual.")
 
+    print("\n🎮 MODOS DE JUEGO Y CATEGORÍAS")
+    print("• Opción 1 del menú: Jugar (todas las categorías).")
+    print("  - El juego usa todas las adivinanzas disponibles de cada nivel.")
+    print("• Opción 2 del menú: Jugar eligiendo categorías.")
+    print("  - Antes de empezar la partida se elige una categoría de adivinanzas.")
+    print("  - Categorías disponibles:")
+    print("    · Cultura general")
+    print("    · Lógica (cuentas y razonamiento)")
+    print("    · Argentina (costumbres, lugares y símbolos del país)")
+
     print("\n🏆 SISTEMA DE PUNTOS")
     print("• Respuesta correcta: +10 puntos.")
     print("• Respuesta incorrecta: -5 puntos.")
@@ -400,6 +410,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
