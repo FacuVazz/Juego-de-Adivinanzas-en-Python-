@@ -2,9 +2,9 @@
 
 import random
 import time
-from adivinanzas import facil, medio, dificil  # <-- módulo con las adivinanzas
+from adivinanzas import facil, medio, dificil 
 
-# Categorías disponibles (deben coincidir con el tercer valor de cada tupla en las listas)
+
 categorias_disponibles = ["cultura general", "logica", "argentina"]
 
 ranking = {}
@@ -660,6 +660,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
