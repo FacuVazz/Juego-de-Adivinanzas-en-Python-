@@ -124,7 +124,6 @@ def guardar_ranking_txt(jugadores, ranking_sesion):
 
 
 def mostrar_ranking_guardado():
-    """Muestra el contenido del archivo ranking.txt, si existe."""
     try:
         with open("ranking.txt", "r", encoding="utf-8") as f:
             print("\n--HISTORIAL DE PARTIDAS--")
@@ -132,6 +131,42 @@ def mostrar_ranking_guardado():
             print("-----------------------------")
     except FileNotFoundError:
         print("Aún no hay partidas guardadas.")
+
+def mostrar_top5_jugadores():
+   try:
+        totales = {}
+        with open("ranking.txt", "r", encoding="utf-8") as f:
+            for line in f:
+                linea = line.strip()
+                # Ignoramos separadores y líneas vacías
+                if not linea or linea.startswith("--") or linea.startswith("="):
+                    continue
+                # Formato esperado: Nombre: X puntos
+                if ":" in linea and "puntos" in linea:
+                    nombre_parte, resto = linea.split(":", 1)
+                    nombre = nombre_parte.strip()
+                    partes = resto.strip().split()
+                    if partes:
+                        try:
+                            puntos = int(partes[0])
+                        except ValueError:
+                            continue
+                        totales[nombre] = totales.get(nombre, 0) + puntos
+
+        if not totales:
+            print("No hay datos suficientes para calcular el Top 5.")
+            return
+
+        ordenados = sorted(totales.items(), key=lambda x: x[1], reverse=True)
+
+        print("\n-- TOP 5 JUGADORES HISTÓRICOS --")
+        for i, (nombre, puntos) in enumerate(ordenados[:5], start=1):
+            print(f"{i}. {nombre}: {puntos} puntos")
+        print("-----------------------------")
+
+    except FileNotFoundError:
+        print("Aún no hay ranking histórico guardado (archivo 'ranking.txt').")
+
 
 
 def cargar_adivinanzas(nivel, usadas, categoria):
@@ -660,6 +695,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
