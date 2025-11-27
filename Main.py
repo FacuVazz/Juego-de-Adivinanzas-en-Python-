@@ -354,6 +354,16 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
             usadas = 0  
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
 
+def aplicar_bonus_racha_perfecta(jugadores, bonus=50):
+    """
+    Aplica un bonus de puntos a quienes terminaron la partida
+    sin ningún fallo (racha perfecta).
+    """
+    print("\nChequeando rachas perfectas...")
+    for nombre in jugadores:
+        if fallos.get(nombre, 0) == 0 and aciertos.get(nombre, 0) > 0:
+            ranking[nombre] = ranking.get(nombre, 0) + bonus
+            print(f"{nombre} tuvo una racha PERFECTA. Bonus de +{bonus} puntos!")
 
 def jugar(nivel_actual, categoria):
     """Disparador principal del juego (2 a 4 jugadores, racha y bump de dificultad)."""
@@ -598,6 +608,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
