@@ -134,20 +134,19 @@ def mostrar_ranking_guardado():
         print("Aún no hay partidas guardadas.")
         return
 
-    # Despues de mostrar el historial, mostramos el Top 5
     mostrar_top5_jugadores()
 
 
 def mostrar_top5_jugadores():
-   try:
+    try:
         totales = {}
         with open("ranking.txt", "r", encoding="utf-8") as f:
             for line in f:
                 linea = line.strip()
-                # Ignoramos separadores y líneas vacías
+                
                 if not linea or linea.startswith("--") or linea.startswith("="):
                     continue
-                # Formato esperado: Nombre: X puntos
+                
                 if ":" in linea and "puntos" in linea:
                     nombre_parte, resto = linea.split(":", 1)
                     nombre = nombre_parte.strip()
@@ -701,6 +700,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
