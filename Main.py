@@ -1,12 +1,18 @@
-#Juego de Adivinanzas - "Adivinando" - Grupo 8
-from adivinanzas import facil, medio, dificil, categorias_disponibles
+# Juego de Adivinanzas - "Adivinando" - Grupo 8
+
 import random
 import time
+from adivinanzas import facil, medio, dificil  # <-- módulo con las adivinanzas
+
+# Categorías disponibles (deben coincidir con el tercer valor de cada tupla en las listas)
+categorias_disponibles = ["cultura general", "logica", "argentina"]
+
 ranking = {}
-aciertos = {}  
+aciertos = {}
 fallos = {}
 rachas = {}
 normalizar = lambda s: s.strip().lower()
+
 
 def mostrar_menu():
     print("🧩 Bienvenido a Adivinando! 🧩")
@@ -22,53 +28,58 @@ def mostrar_menu():
 
 
 def pedir_categorias():
-    print("Elegi categoria de adivinanzas:")
-    print("1) Cultura general / 2) logica / 3) argentina")
+    print("Elegí categoría de adivinanzas:")
+    print("1) Cultura general / 2) Lógica / 3) Argentina")
 
-    while True: 
+    while True:
         try:
-            num = int(input("Ingrese el numero de la categoria: "))
+            num = int(input("Ingrese el número de la categoría: "))
 
             if 1 <= num <= len(categorias_disponibles):
                 categoria = categorias_disponibles[num - 1]
-                print("Categoria elegida:", categoria)
+                print("Categoría elegida:", categoria)
                 return categoria
             else:
                 print("Número fuera de rango. Probá de nuevo.")
         except ValueError:
             print("Entrada inválida. Ingresá solo números.")
 
-    
-    
-def elegir_adivinanza(nivel,usadas, categoria):
-    
+
+def elegir_adivinanza(nivel, usadas, categoria):
     dificultades = {
-        "facil" : facil,
-        "media" : medio,
-        "dificil" : dificil,
+        "facil": facil,
+        "media": medio,
+        "dificil": dificil,
     }
 
     lista = dificultades[nivel]
 
-    if categoria is None: 
+    if categoria is None:
+        # Modo sin filtro de categoría
         if len(usadas[nivel]) == len(lista):
-            usadas[nivel].clear()  
+            usadas[nivel].clear()
 
         restantes = [i for i in range(len(lista)) if i not in usadas[nivel]]
-    else: 
-
-        restantes = [i for i in range(len(lista)) if i not in usadas[nivel] and lista[i][2] == categoria]
+    else:
+        # Modo con categoría elegida
+        restantes = [
+            i for i in range(len(lista))
+            if i not in usadas[nivel] and lista[i][2] == categoria
+        ]
 
         if len(restantes) == 0:
             usadas[nivel].clear()
-            restantes = [i for i in range(len(lista)) if lista[i][2] == categoria]
+            restantes = [
+                i for i in range(len(lista))
+                if lista[i][2] == categoria
+            ]
 
     indice = random.choice(restantes)
     usadas[nivel].add(indice)
 
-    pregunta,respuesta,categoria = lista[indice]
+    pregunta, respuesta, categoria = lista[indice]
     return pregunta, respuesta
-    
+
 
 def dificultad_por_ronda(rondas_completas):
     if rondas_completas < 3:
@@ -76,7 +87,8 @@ def dificultad_por_ronda(rondas_completas):
     if rondas_completas < 6:
         return "media"
     return "dificil"
-    
+
+
 def siguiente_nivel(nivel):
     if nivel == "facil":
         return "media"
@@ -86,7 +98,7 @@ def siguiente_nivel(nivel):
 
 
 def cuenta_regresiva(n):
-    """Cuenta regresiva para usar recursividad"""
+    """Cuenta regresiva para usar recursividad."""
     if n == 0:
         print("¡Comienza el juego!")
     else:
@@ -148,7 +160,9 @@ def pedir_jugadores():
     for i in range(1, cant + 1):
         nombre = input(f"Nombre del Jugador {i}: ").strip().capitalize() or f"Jugador{i}"
         while nombre in jugadores:
-            nombre = input(f"'{nombre}' ya está usado, ingresá otro: ").strip().capitalize() or f"Jugador{i}"
+            nombre = input(
+                f"'{nombre}' ya está usado, ingresá otro: "
+            ).strip().capitalize() or f"Jugador{i}"
         jugadores.append(nombre)
 
     return jugadores
@@ -159,7 +173,6 @@ def pedir_parametros_partida():
     Pide cuántas vidas tendrá cada jugador y cuántas rondas máximas se van a jugar.
     Para usarlo en el modo contrarreloj.
     """
-    
     while True:
         try:
             vidas = int(input("¿Cuántas vidas quiere cada jugador? (1-10): ").strip())
@@ -169,10 +182,11 @@ def pedir_parametros_partida():
         except ValueError as e:
             print("Entrada inválida:", e)
 
-    
     while True:
         try:
-            rondas = int(input("¿Cuántas rondas máximas querés jugar? (1-50): ").strip())
+            rondas = int(
+                input("¿Cuántas rondas máximas querés jugar? (1-50): ").strip()
+            )
             if not (1 <= rondas <= 50):
                 raise ValueError("Las rondas deben estar entre 1 y 50.")
             break
@@ -183,17 +197,17 @@ def pedir_parametros_partida():
 
 
 def mostrar_resultado(acerto):
-    """ Informa si el jugador acertó o no la pregunta """
+    """Informa si el jugador acertó o no la pregunta."""
     if acerto:
         print("¡Respuesta correcta! Sumás 10 puntos.")
     else:
         print("Respuesta incorrecta. Perdés 5 puntos.")
 
 
-def imprimir_ronda(vidas):  
+def imprimir_ronda(vidas):
     """
     Muestra por ronda: puntos y vidas por usuario.
-    Ademas, notifica si algún jugador fue eliminado.
+    Además, notifica si algún jugador fue eliminado.
     """
     print("Resumen de la ronda")
     resumen = []
@@ -207,32 +221,35 @@ def imprimir_ronda(vidas):
 
     for nombre in vidas:
         if vidas[nombre] <= 0:
-            print(f" {nombre} fue eliminado de la partida (sin vidas).")
- 
+            print(f"{nombre} fue eliminado de la partida (sin vidas).")
+
+
 def preguntar(nombre, vidas, nivel, usadas, categoria):
     """
     Turno de un jugador: pregunta y valida.
     Devuelve (acerto: bool, eliminado_ahora: bool)
-    (Actualizacion de Facu)
     """
     if vidas[nombre] <= 0:
         return False, False
+
     adiv = cargar_adivinanzas(nivel, usadas, categoria)
     pregunta, solucion = list(adiv.items())[0]
     print(f"\nTurno de {nombre} / Nivel: {nivel}")
     print("Pregunta:", pregunta)
-    
+
     try:
         resp = normalizar(input("Tu respuesta: "))
         acerto = (resp == normalizar(solucion))
+
         if nombre not in rachas:
             rachas[nombre] = 0
+
         if acerto:
             rachas[nombre] += 1
             puntos = 10
             if rachas[nombre] % 3 == 0:
                 puntos += 15
-                print("¡Estas en racha de 3! Bono de +15 puntos.")
+                print("¡Estás en racha de 3! Bono de +15 puntos.")
             ranking[nombre] = ranking.get(nombre, 0) + puntos
             aciertos[nombre] = aciertos.get(nombre, 0) + 1
         else:
@@ -241,11 +258,11 @@ def preguntar(nombre, vidas, nivel, usadas, categoria):
             vidas[nombre] -= 1
             fallos[nombre] = fallos.get(nombre, 0) + 1
             if vidas[nombre] == 0:
-                print(f" {nombre} se quedó sin vidas.")
+                print(f"{nombre} se quedó sin vidas.")
 
         mostrar_resultado(acerto)
         return acerto, (vidas[nombre] == 0)
-        
+
     except Exception as e:
         print("Ocurrió un error al ingresar la respuesta:", e)
         print("Perdés 1 vida por error de entrada")
@@ -253,7 +270,7 @@ def preguntar(nombre, vidas, nivel, usadas, categoria):
         vidas[nombre] -= 1
         fallos[nombre] = fallos.get(nombre, 0) + 1
         if vidas[nombre] == 0:
-            print(f" {nombre} se quedó sin vidas.")
+            print(f"{nombre} se quedó sin vidas.")
         return False, (vidas[nombre] == 0)
 
 
@@ -294,7 +311,7 @@ def preguntar_contrareloj(nombre, vidas, nivel, usadas, categoria, limite_segund
             puntos = 10
             if rachas[nombre] % 3 == 0:
                 puntos += 15
-                print("¡Estas en racha de 3! Bono de +15 puntos.")
+                print("¡Estás en racha de 3! Bono de +15 puntos.")
             ranking[nombre] = ranking.get(nombre, 0) + puntos
             aciertos[nombre] = aciertos.get(nombre, 0) + 1
         else:
@@ -303,7 +320,7 @@ def preguntar_contrareloj(nombre, vidas, nivel, usadas, categoria, limite_segund
             vidas[nombre] -= 1
             fallos[nombre] = fallos.get(nombre, 0) + 1
             if vidas[nombre] == 0:
-                print(f" {nombre} se quedó sin vidas.")
+                print(f"{nombre} se quedó sin vidas.")
 
         mostrar_resultado(acerto)
         return acerto, (vidas[nombre] == 0)
@@ -315,7 +332,7 @@ def preguntar_contrareloj(nombre, vidas, nivel, usadas, categoria, limite_segund
         vidas[nombre] -= 1
         fallos[nombre] = fallos.get(nombre, 0) + 1
         if vidas[nombre] == 0:
-            print(f" {nombre} se quedó sin vidas.")
+            print(f"{nombre} se quedó sin vidas.")
         return False, (vidas[nombre] == 0)
 
 
@@ -351,8 +368,9 @@ def imprimir_resumen_general(jugadores, vidas, vidas_iniciales=3):
         f = fallos.get(nombre, 0)
         usadas = vidas_iniciales - vidas.get(nombre, 0)
         if usadas < 0:
-            usadas = 0  
+            usadas = 0
         print(f"{nombre} -> Aciertos: {a} | Fallos: {f} | Vidas utilizadas: {usadas}")
+
 
 def aplicar_bonus_racha_perfecta(jugadores, bonus=50):
     """
@@ -365,6 +383,7 @@ def aplicar_bonus_racha_perfecta(jugadores, bonus=50):
             ranking[nombre] = ranking.get(nombre, 0) + bonus
             print(f"{nombre} tuvo una racha PERFECTA. Bonus de +{bonus} puntos!")
 
+
 def jugar(nivel_actual, categoria):
     """Disparador principal del juego (2 a 4 jugadores, racha y bump de dificultad)."""
     try:
@@ -374,6 +393,8 @@ def jugar(nivel_actual, categoria):
         vidas = {n: 3 for n in jugadores}
         for n in jugadores:
             rachas[n] = 0
+            aciertos[n] = 0
+            fallos[n] = 0
         rondas_completas = 0
 
         usadas = {
@@ -388,13 +409,23 @@ def jugar(nivel_actual, categoria):
             if len(activos) <= 1:
                 print("----------------------------")
                 print("|Juego Finalizado|")
+
+                # Bonus por racha perfecta antes de mostrar ranking
+                aplicar_bonus_racha_perfecta(jugadores)
+
                 imprimir_tablero_general(jugadores)
                 if len(activos) == 1:
                     g = activos[0]
-                    print(f"El GANADOR es: {g} (último con vidas). Puntos: {ranking.get(g,0)}")
+                    print(
+                        f"El GANADOR es: {g} (último con vidas). "
+                        f"Puntos: {ranking.get(g, 0)}"
+                    )
                 else:
                     resultado = determinar_ganador_por_puntos(jugadores)
-                    print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
+                    print(
+                        f"El GANADOR es: {resultado['nombre']} "
+                        f"con {resultado['puntos']} puntos (sumatoria total)."
+                    )
                 imprimir_resumen_general(jugadores, vidas)
                 guardar_ranking_txt(jugadores, ranking)
                 break
@@ -408,13 +439,18 @@ def jugar(nivel_actual, categoria):
                 if orden[nivel_round] > orden[nivel_actual]:
                     nivel_actual = nivel_round
 
-                acerto, eliminado = preguntar(nombre, vidas, nivel_actual, usadas, categoria)
-               
+                acerto, eliminado = preguntar(
+                    nombre, vidas, nivel_actual, usadas, categoria
+                )
+
                 if eliminado:
                     previo = nivel_actual
                     nivel_actual = siguiente_nivel(nivel_actual)
                     if nivel_actual != previo:
-                        print(f"La Dificultad aumenta por cada eliminacion: {previo} → {nivel_actual}")
+                        print(
+                            f"La Dificultad aumenta por cada eliminación: "
+                            f"{previo} → {nivel_actual}"
+                        )
 
                 if sum(1 for n in jugadores if vidas[n] > 0) <= 1:
                     break
@@ -430,6 +466,7 @@ def jugar(nivel_actual, categoria):
 
     return nivel_actual
 
+
 def jugar_contrareloj(nivel_actual, categoria):
     """
     Modo contrarreloj:
@@ -438,17 +475,17 @@ def jugar_contrareloj(nivel_actual, categoria):
     - Límite de tiempo por pregunta
     """
     try:
-        print("\nPreparando la partida Contrareloj...")
+        print("\nPreparando la partida Contrarreloj...")
         cuenta_regresiva(3)
         jugadores = pedir_jugadores()
         vidas_iniciales, rondas_maximas = pedir_parametros_partida()
         vidas = {n: vidas_iniciales for n in jugadores}
-        
+
         for n in jugadores:
             rachas[n] = 0
             aciertos[n] = 0
             fallos[n] = 0
-        
+
         while True:
             try:
                 limite_segundos = int(
@@ -473,13 +510,23 @@ def jugar_contrareloj(nivel_actual, categoria):
             if len(activos) <= 1 or rondas_completas >= rondas_maximas:
                 print("----------------------------")
                 print("|Juego Finalizado (Contrarreloj)|")
+
+                # Bonus por racha perfecta también en contrarreloj
+                aplicar_bonus_racha_perfecta(jugadores)
+
                 imprimir_tablero_general(jugadores)
                 if len(activos) == 1:
                     g = activos[0]
-                    print(f"El GANADOR es: {g} (último con vidas). Puntos: {ranking.get(g,0)}")
+                    print(
+                        f"El GANADOR es: {g} (último con vidas). "
+                        f"Puntos: {ranking.get(g, 0)}"
+                    )
                 else:
                     resultado = determinar_ganador_por_puntos(jugadores)
-                    print(f"El GANADOR es: {resultado['nombre']} con {resultado['puntos']} puntos (sumatoria total).")
+                    print(
+                        f"El GANADOR es: {resultado['nombre']} "
+                        f"con {resultado['puntos']} puntos (sumatoria total)."
+                    )
                 imprimir_resumen_general(jugadores, vidas, vidas_iniciales)
                 guardar_ranking_txt(jugadores, ranking)
                 break
@@ -501,7 +548,10 @@ def jugar_contrareloj(nivel_actual, categoria):
                     previo = nivel_actual
                     nivel_actual = siguiente_nivel(nivel_actual)
                     if nivel_actual != previo:
-                        print(f"La Dificultad aumenta por cada eliminacion: {previo} → {nivel_actual}")
+                        print(
+                            f"La Dificultad aumenta por cada eliminación: "
+                            f"{previo} → {nivel_actual}"
+                        )
 
                 if sum(1 for n in jugadores if vidas[n] > 0) <= 1:
                     break
@@ -522,17 +572,17 @@ def mostrar_instructivo():
     print("\n📘 INSTRUCTIVO DEL JUEGO - ADIVINANDO 📘")
     print("--------------------------------------------")
 
-    print("\n OBJETIVO")
+    print("\nOBJETIVO")
     print("Acertar la mayor cantidad posible de adivinanzas, sumar puntos y mantener tus vidas.")
     print("El último jugador con vidas o el que más puntos acumule será el ganador.")
 
-    print("\n VIDAS")
-    print("• Cada jugador comienza con 3 vidas.")
+    print("\nVIDAS")
+    print("• Cada jugador comienza con 3 vidas (o las que se definan en Contrarreloj).")
     print("• Cada respuesta incorrecta resta 1 vida.")
     print("• Los errores de entrada (excepciones) también restan 1 vida.")
     print("• Cuando un jugador llega a 0 vidas queda eliminado y no vuelve a jugar.")
 
-    print("\n DIFICULTAD")
+    print("\nDIFICULTAD")
     print("El juego avanza en niveles según las rondas:")
     print("• Fácil: rondas 1 a 3.")
     print("• Media: rondas 4 a 6.")
@@ -542,32 +592,33 @@ def mostrar_instructivo():
     print("• Si ya están en Difícil, la dificultad no cambia.")
     print("• Todos los jugadores responden preguntas del mismo nivel actual.")
 
-    print("\n MODOS DE JUEGO Y CATEGORÍAS")
-    print("• Opción 1 del menú: Jugar (todas las categorías).")
-    print("  - El juego usa todas las adivinanzas disponibles de cada nivel.")
-    print("• Opción 2 del menú: Jugar eligiendo categorías.")
-    print("  - Antes de empezar la partida se elige una categoría de adivinanzas.")
-    print("  - Categorías disponibles:")
+    print("\nMODOS DE JUEGO Y CATEGORÍAS")
+    print("• Opción 1: Jugar (todas las categorías).")
+    print("  - Usa todas las adivinanzas disponibles por nivel.")
+    print("• Opción 2: Jugar eligiendo categorías.")
+    print("  - Antes de empezar se elige una categoría:")
     print("    · Cultura general")
-    print("    · Lógica (cuentas y razonamiento)")
-    print("    · Argentina (costumbres, lugares y símbolos del país)")
+    print("    · Lógica")
+    print("    · Argentina")
+    print("• Opción 3: Modo Contrarreloj.")
+    print("  - Podés definir vidas, rondas y tiempo máximo por pregunta.")
 
-    print("\n SISTEMA DE PUNTOS")
+    print("\nSISTEMA DE PUNTOS")
     print("• Respuesta correcta: +10 puntos.")
     print("• Respuesta incorrecta: -5 puntos.")
     print("• Error de entrada: perdés 1 vida, sin pérdida de puntos.")
 
-    print("\n BONIFICACIÓN POR RACHA")
+    print("\nBONIFICACIÓN POR RACHA")
     print("• Cada 3 respuestas correctas consecutivas, sumás +15 puntos extra.")
     print("  (es decir, ese turno sumás 25 puntos en total).")
+    print("• Racha perfecta (sin fallos en toda la partida): bonus adicional al final.")
 
-    print("\n AL FINAL DEL JUEGO SE MUESTRA:")
+    print("\nAL FINAL DEL JUEGO SE MUESTRA:")
     print("• El ganador.")
     print("• El ranking general de puntajes.")
     print("• Aciertos, fallos y vidas utilizadas por cada jugador.")
 
     print("--------------------------------------------\n")
-
 
 
 if __name__ == "__main__":
@@ -576,8 +627,9 @@ if __name__ == "__main__":
     while menu:
         mostrar_menu()
         opcion = input("Elegí opción: ").strip()
-        
+
         if opcion == "1":
+            # Todas las categorías
             nivel_actual = jugar(nivel_actual, None)
 
         elif opcion == "2":
@@ -595,7 +647,7 @@ if __name__ == "__main__":
                 nivel_actual = jugar_contrareloj(nivel_actual, categoria)
             else:
                 print("Opción inválida, volviendo al menú principal.")
-                
+
         elif opcion == "4":
             mostrar_ranking_guardado()
 
@@ -603,12 +655,11 @@ if __name__ == "__main__":
             mostrar_instructivo()
 
         elif opcion == "6":
-            print("Gracias totales por jugar maquina!")
+            print("Gracias totales por jugar máquina!")
             menu = False
 
         else:
             print("Opción inválida.")
-
 
 
 
