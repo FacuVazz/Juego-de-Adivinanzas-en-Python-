@@ -124,6 +124,7 @@ def guardar_ranking_txt(jugadores, ranking_sesion):
 
 
 def mostrar_ranking_guardado():
+    """Muestra el historial completo y el Top 5 histórico, si existe."""
     try:
         with open("ranking.txt", "r", encoding="utf-8") as f:
             print("\n--HISTORIAL DE PARTIDAS--")
@@ -131,6 +132,11 @@ def mostrar_ranking_guardado():
             print("-----------------------------")
     except FileNotFoundError:
         print("Aún no hay partidas guardadas.")
+        return
+
+    # Despues de mostrar el historial, mostramos el Top 5
+    mostrar_top5_jugadores()
+
 
 def mostrar_top5_jugadores():
    try:
@@ -695,6 +701,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
