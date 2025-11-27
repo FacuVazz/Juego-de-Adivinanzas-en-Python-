@@ -270,7 +270,9 @@ def preguntar(nombre, vidas, nivel, usadas, categoria):
     Devuelve (acerto: bool, eliminado_ahora: bool)
     """
     if vidas[nombre] <= 0:
-        return False, False
+        acerto = False
+        eliminado_ahora = False
+        return acerto, eliminado_ahora
 
     adiv = cargar_adivinanzas(nivel, usadas, categoria)
     pregunta, solucion = list(adiv.items())[0]
@@ -321,7 +323,9 @@ def preguntar_contrareloj(nombre, vidas, nivel, usadas, categoria, limite_segund
     - Si se pasa del tiempo, cuenta como incorrecta.
     """
     if vidas[nombre] <= 0:
-        return False, False
+         acerto = False
+         eliminado_ahora = False
+         return acerto, eliminado_ahora
 
     adiv = cargar_adivinanzas(nivel, usadas, categoria)
     pregunta, solucion = list(adiv.items())[0]
@@ -700,6 +704,7 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida.")
+
 
 
 
